@@ -64,6 +64,10 @@ class ProductAdapter() :
         notifyDataSetChanged()
     }
 
+    fun getItems(): ArrayList<ProductModel> {
+        return productList
+    }
+
     fun setQuantityChangeListener(listener: QuantityChangeListener) {
         quantityChangeListener = listener
     }
