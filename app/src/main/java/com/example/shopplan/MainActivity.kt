@@ -69,6 +69,7 @@ class MainActivity : ComponentActivity() {
             } else if (requestCode == UPDATE_SHOP_PLAN_FORM_REQUEST_CODE) {
                 Log.i(TAG, "onActivityResult UPDATE_SHOP_PLAN_FORM_REQUEST_CODE")
                 adapter.updateItem(shopPlan)
+                ShopPlanManager.updateShopPlan(shopPlan)
             }
         }
     }

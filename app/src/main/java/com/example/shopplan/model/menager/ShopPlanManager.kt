@@ -59,9 +59,12 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
 
         while (cursor.moveToNext()) {
             val shopPlanId = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID))
-            val title = cursor.getString(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_TITLE))
-            val shopName = cursor.getString(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_NAME))
-            val totalCost = cursor.getDouble(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_TOTAL_COST))
+            val title =
+                cursor.getString(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_TITLE))
+            val shopName =
+                cursor.getString(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_NAME))
+            val totalCost =
+                cursor.getDouble(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_TOTAL_COST))
 
             val products = getProductsForShopPlan(db, shopPlanId)
 
@@ -100,9 +103,12 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
         val productList = mutableListOf<ProductModel>()
 
         while (cursor.moveToNext()) {
-            val name = cursor.getString(cursor.getColumnIndex(ShopPlanContract.ProductEntry.COLUMN_NAME))
-            val price = cursor.getDouble(cursor.getColumnIndex(ShopPlanContract.ProductEntry.COLUMN_PRICE))
-            val quantity = cursor.getInt(cursor.getColumnIndex(ShopPlanContract.ProductEntry.COLUMN_QUANTITY))
+            val name =
+                cursor.getString(cursor.getColumnIndex(ShopPlanContract.ProductEntry.COLUMN_NAME))
+            val price =
+                cursor.getDouble(cursor.getColumnIndex(ShopPlanContract.ProductEntry.COLUMN_PRICE))
+            val quantity =
+                cursor.getInt(cursor.getColumnIndex(ShopPlanContract.ProductEntry.COLUMN_QUANTITY))
 
             val product = ProductModel(name, price, quantity)
             productList.add(product)
@@ -122,6 +128,23 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
         val selectionArgs = arrayOf(shopPlan.title)
 
         db.delete(ShopPlanContract.ShopPlanEntry.TABLE_NAME, selection, selectionArgs)
+
+        db.close()
+    }
+
+    fun updateShopPlan(shopPlan: ShopPlanModel) {
+        val db = dbHelper.writableDatabase
+
+        val selection = "${ShopPlanContract.ShopPlanEntry.COLUMN_TITLE} LIKE ?"
+        val selectionArgs = arrayOf(shopPlan.title)
+
+        val shopPlanValues = ContentValues().apply {
+            put(ShopPlanContract.ShopPlanEntry.COLUMN_TITLE, shopPlan.title)
+            put(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_NAME, shopPlan.shopName)
+            put(ShopPlanContract.ShopPlanEntry.COLUMN_TOTAL_COST, shopPlan.totalCost)
+        }
+
+        db.update(ShopPlanContract.ShopPlanEntry.TABLE_NAME, shopPlanValues, selection, selectionArgs)
 
         db.close()
     }
