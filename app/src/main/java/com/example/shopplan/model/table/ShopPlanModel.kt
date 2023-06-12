@@ -1,4 +1,4 @@
-package com.example.shopplan
+package com.example.shopplan.model
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -13,7 +13,7 @@ data class ShopPlanModel(
         parcel.readString().toString(),
         parcel.readString().toString(),
         parcel.readDouble(),
-        parcel.createTypedArrayList(ProductModel.CREATOR) as List<ProductModel>
+        parcel.createTypedArrayList(ProductModel) as List<ProductModel>
     ) {
     }
 

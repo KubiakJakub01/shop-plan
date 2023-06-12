@@ -1,8 +1,7 @@
-package com.example.shopplan
+package com.example.shopplan.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.io.Serializable
 
 data class ProductModel(
     val name: String, val price: Double, var quantity: Int
