@@ -18,7 +18,8 @@ class MainActivity : ComponentActivity() {
 //    private lateinit var shopPlanAdapter: ShopPlanAdapter
     private lateinit var btnCreateShopPlan: Button
     companion object {
-        private const val SHOP_PLAN_FORM_REQUEST_CODE = 1
+        private const val NEW_SHOP_PLAN_FORM_REQUEST_CODE = 1
+        private const val UPDATE_SHOP_PLAN_FORM_REQUEST_CODE = 2
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,28 +35,33 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.i(TAG, "onActivityResult")
+        Log.i(TAG, "onActivityResult. requestCode: $requestCode, resultCode: $resultCode, data: $data")
         super.onActivityResult(requestCode, resultCode, data)
 
         // Check if the request code is the same as what is passed here
-        if (requestCode == SHOP_PLAN_FORM_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             // Retrieve the information from the result intent
             val title = data?.getStringExtra("title")
             val shop = data?.getStringExtra("shopName")
             val totalCost = data?.getDoubleExtra("totalCost", 0.0)
             val products = data?.getParcelableArrayListExtra<ProductModel>("products")
 
-            // Do something with the retrieved information
             val shopPlan = ShopPlanModel(title.toString(), shop.toString(),
                 totalCost.toString().toDouble(), products as ArrayList<ProductModel>)
             Log.i(TAG, "onActivityResult retrieve: $shopPlan")
-            adapter.addItem(shopPlan)
+            if (requestCode == NEW_SHOP_PLAN_FORM_REQUEST_CODE) {
+                Log.i(TAG, "onActivityResult NEW_SHOP_PLAN_FORM_REQUEST_CODE")
+                adapter.addItem(shopPlan)
+            } else if (requestCode == UPDATE_SHOP_PLAN_FORM_REQUEST_CODE) {
+                Log.i(TAG, "onActivityResult UPDATE_SHOP_PLAN_FORM_REQUEST_CODE")
+                adapter.updateItem(shopPlan)
+            }
         }
     }
 
     fun openShopPlanForm(view: View) {
         val intent = Intent(this, ShopPlanFormActivity::class.java)
-        startActivityForResult(intent, SHOP_PLAN_FORM_REQUEST_CODE)
+        startActivityForResult(intent, NEW_SHOP_PLAN_FORM_REQUEST_CODE)
     }
 }
 

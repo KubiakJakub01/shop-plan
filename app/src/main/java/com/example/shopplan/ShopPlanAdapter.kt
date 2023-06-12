@@ -1,16 +1,21 @@
 package com.example.shopplan
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
 
 class ShopPlanAdapter() :
     RecyclerView.Adapter<ShopPlanAdapter.ShopPlanViewHolder>() {
 
     private val shopPlanList = ArrayList<ShopPlanModel>()
+    companion object {
+        private const val UPDATE_SHOP_PLAN_FORM_REQUEST_CODE = 2
+    }
 
     inner class ShopPlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
@@ -38,7 +43,7 @@ class ShopPlanAdapter() :
             val context = holder.itemView.context
             val intent = Intent(context, ShopPlanFormActivity::class.java)
             intent.putExtra("shopPlan", product)
-            context.startActivity(intent)
+            (context as Activity).startActivityForResult(intent, UPDATE_SHOP_PLAN_FORM_REQUEST_CODE)
         }
     }
 
@@ -50,4 +55,13 @@ class ShopPlanAdapter() :
         shopPlanList.add(shopPlan)
         notifyDataSetChanged()
     }
+
+    fun updateItem(shopPlan: ShopPlanModel) {
+        val index = shopPlanList.indexOfFirst { it.title == shopPlan.title }
+        if (index != -1) {
+            shopPlanList[index] = shopPlan
+            notifyItemChanged(index)
+        }
+    }
+
 }
