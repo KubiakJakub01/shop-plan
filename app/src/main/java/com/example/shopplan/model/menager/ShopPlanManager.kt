@@ -115,5 +115,14 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
 
     // TODO: Implement other CRUD operations (update, delete) as needed
 
-    // ...
+    public fun deleteShopPlan(shopPlan: ShopPlanModel) {
+        val db = dbHelper.writableDatabase
+
+        val selection = "${ShopPlanContract.ShopPlanEntry.COLUMN_TITLE} LIKE ?"
+        val selectionArgs = arrayOf(shopPlan.title)
+
+        db.delete(ShopPlanContract.ShopPlanEntry.TABLE_NAME, selection, selectionArgs)
+
+        db.close()
+    }
 }
