@@ -1,5 +1,6 @@
 package com.example.shopplan
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,8 +23,6 @@ class ShopPlanAdapter() :
             shopNameTextView.text = shopPlan.shopName
             productCountTextView.text = shopPlan.products.size.toString()
             totalCostTextView.text = shopPlan.totalCost.toString()
-
-            // Add click listener or any other logic as needed
         }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopPlanViewHolder {
@@ -34,6 +33,13 @@ class ShopPlanAdapter() :
     override fun onBindViewHolder(holder: ShopPlanViewHolder, position: Int) {
         val product = shopPlanList[position]
         holder.bind(product)
+
+        holder.itemView.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, ShopPlanFormActivity::class.java)
+            intent.putExtra("shopPlan", product)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {

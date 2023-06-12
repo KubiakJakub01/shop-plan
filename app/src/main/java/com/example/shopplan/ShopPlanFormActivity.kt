@@ -52,10 +52,31 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener  {
         }
 
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice)
+
+        val shopPlan = intent.getParcelableExtra<ShopPlanModel>("shopPlan")
+        if (shopPlan != null) {
+            fillFormWithShopPlan(shopPlan)
+        }
     }
 
     override fun onQuantityChanged(costChange: Double) {
         updateTotalCostText(costChange)
+    }
+
+    private fun fillFormWithShopPlan(shopPlan: ShopPlanModel) {
+        editTextTitle.setText(shopPlan.title)
+        editTextShopName.setText(shopPlan.shopName)
+
+        // Clear the existing items in the adapter
+        adapter.clearItems()
+
+        // Add the items from the shop plan to the adapter
+        for (product in shopPlan.products) {
+            adapter.addItem(product)
+        }
+
+        // Update the total cost
+        updateTotalCostText(shopPlan.totalCost)
     }
 
     private fun showItemDialog() {

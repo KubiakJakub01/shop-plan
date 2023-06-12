@@ -29,7 +29,7 @@ class ProductAdapter() :
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.product_row, parent, false)
+                .inflate(R.layout.item_product, parent, false)
             return ProductViewHolder(view)
         }
 
@@ -70,5 +70,10 @@ class ProductAdapter() :
 
     fun setQuantityChangeListener(listener: QuantityChangeListener) {
         quantityChangeListener = listener
+    }
+
+    fun clearItems() {
+        productList.clear()
+        notifyDataSetChanged()
     }
 }
