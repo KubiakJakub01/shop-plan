@@ -3,6 +3,7 @@ package com.example.shopplan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -12,12 +13,14 @@ class ProductAdapter() :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     private val productList = ArrayList<ProductModel>()
+    private val checkedPositions = ArrayList<Int>()
     private var quantityChangeListener: QuantityChangeListener? = null
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textViewProductName: TextView = itemView.findViewById(R.id.textViewProductName)
         private val textViewPrice: TextView = itemView.findViewById(R.id.textViewPrice)
         private val textViewQuantity: TextView = itemView.findViewById(R.id.textViewQuantity)
+        private val checkBox: CheckBox = itemView.findViewById(R.id.checkBox)
         val buttonMinus: ImageButton = itemView.findViewById(R.id.buttonMinus)
         val buttonPlus: ImageButton = itemView.findViewById(R.id.buttonPlus)
 
@@ -25,6 +28,16 @@ class ProductAdapter() :
             textViewProductName.text = product.name
             textViewPrice.text = "Price: $${product.price}"
             textViewQuantity.text = product.quantity.toString()
+
+            checkBox.isChecked = checkedPositions.contains(position)
+
+            checkBox.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    checkedPositions.add(position)
+                } else {
+                    checkedPositions.remove(position)
+                }
+            }
         }
     }
 
@@ -76,5 +89,19 @@ class ProductAdapter() :
     fun clearItems() {
         productList.clear()
         notifyDataSetChanged()
+    }
+
+    fun deleteCheckedItems() {
+        val checkedItems = getCheckedItems()
+        productList.removeAll(checkedItems.toSet())
+        checkedPositions.clear()
+        notifyDataSetChanged()
+    }
+    fun getCheckedItems(): ArrayList<ProductModel> {
+        val checkedItems = ArrayList<ProductModel>()
+        for (position in checkedPositions) {
+            checkedItems.add(productList[position])
+        }
+        return checkedItems
     }
 }

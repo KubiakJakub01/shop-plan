@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="item_margin_left_right">20</dimen>
+    <dimen name="item_items_margin_left_right">20</dimen>
+    <dimen name="item_items_checkbox_margin_top_bottom">15</dimen>
 </resources>

@@ -19,6 +19,7 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener  {
 
     private lateinit var adapter: ProductAdapter
     private lateinit var recyclerViewItems: RecyclerView
+    private lateinit var buttonDeleteItem: AppCompatImageButton
     private lateinit var buttonAddItem: AppCompatImageButton
     private lateinit var editTextTitle: EditText
     private lateinit var editTextShopName: EditText
@@ -48,6 +49,11 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener  {
         buttonAddItem = findViewById(R.id.buttonAddItem)
         buttonAddItem.setOnClickListener {
             showItemDialog()
+        }
+
+        buttonDeleteItem = findViewById(R.id.buttonDeleteItem)
+        buttonDeleteItem.setOnClickListener {
+            adapter.deleteCheckedItems()
         }
 
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice)
@@ -136,5 +142,9 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener  {
 
         setResult(RESULT_OK, resultIntent)
         finish()
+    }
+
+    fun deleteCheckedItems() {
+        adapter.deleteCheckedItems()
     }
 }
