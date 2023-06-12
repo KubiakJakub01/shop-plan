@@ -9,6 +9,11 @@ import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.shopplan.model.dao.ShopPlanDbHelper
+import com.example.shopplan.model.menager.ProductManager
+import com.example.shopplan.model.menager.ShopPlanManager
+import com.example.shopplan.model.table.ProductModel
+import com.example.shopplan.model.table.ShopPlanModel
 
 class MainActivity : ComponentActivity() {
 
@@ -16,6 +21,9 @@ class MainActivity : ComponentActivity() {
     private lateinit var adapter: ShopPlanAdapter
     private lateinit var rvShopPlans: RecyclerView
 //    private lateinit var shopPlanAdapter: ShopPlanAdapter
+    private lateinit var dbHelper: ShopPlanDbHelper
+    private lateinit var ShopPlanManager: ShopPlanManager
+    private lateinit var ProductManager: ProductManager
     private lateinit var btnCreateShopPlan: Button
     companion object {
         private const val NEW_SHOP_PLAN_FORM_REQUEST_CODE = 1
@@ -25,11 +33,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        dbHelper = ShopPlanDbHelper(this)
+        ShopPlanManager = ShopPlanManager(dbHelper)
+        ProductManager = ProductManager(dbHelper)
+
         adapter = ShopPlanAdapter()
         rvShopPlans = findViewById(R.id.rvShopPlans)
         rvShopPlans.adapter = adapter
         rvShopPlans.layoutManager = LinearLayoutManager(this)
         rvShopPlans.setHasFixedSize(true)
+        fillShopPlanList()
 
         btnCreateShopPlan = findViewById(R.id.btnCreateShopPlan)
     }
@@ -52,6 +65,7 @@ class MainActivity : ComponentActivity() {
             if (requestCode == NEW_SHOP_PLAN_FORM_REQUEST_CODE) {
                 Log.i(TAG, "onActivityResult NEW_SHOP_PLAN_FORM_REQUEST_CODE")
                 adapter.addItem(shopPlan)
+                ShopPlanManager.addShopPlan(shopPlan)
             } else if (requestCode == UPDATE_SHOP_PLAN_FORM_REQUEST_CODE) {
                 Log.i(TAG, "onActivityResult UPDATE_SHOP_PLAN_FORM_REQUEST_CODE")
                 adapter.updateItem(shopPlan)
@@ -62,6 +76,13 @@ class MainActivity : ComponentActivity() {
     fun openShopPlanForm(view: View) {
         val intent = Intent(this, ShopPlanFormActivity::class.java)
         startActivityForResult(intent, NEW_SHOP_PLAN_FORM_REQUEST_CODE)
+    }
+
+    private fun fillShopPlanList() {
+        val shopPlans = ShopPlanManager.getShopPlans()
+        for (shopPlan in shopPlans) {
+            adapter.addItem(shopPlan)
+        }
     }
 }
 

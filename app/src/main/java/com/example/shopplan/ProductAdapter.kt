@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.shopplan.model.table.ProductModel
 
 class ProductAdapter() :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {

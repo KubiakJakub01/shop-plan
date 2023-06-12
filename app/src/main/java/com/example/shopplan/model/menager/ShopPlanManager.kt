@@ -36,7 +36,7 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
     }
 
     @SuppressLint("Range")
-    fun getAllShopPlans(): List<ShopPlanModel> {
+    fun getShopPlans(): List<ShopPlanModel> {
         val db = dbHelper.readableDatabase
         val shopPlanList = mutableListOf<ShopPlanModel>()
 
@@ -76,8 +76,7 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
     }
 
     @SuppressLint("Range")
-    private fun getProductsForShopPlan(shopPlanId: Long): List<ProductModel> {
-        val db = dbHelper.readableDatabase
+    private fun getProductsForShopPlan(db: SQLiteDatabase, shopPlanId: Long): List<ProductModel> {
         val projection = arrayOf(
             BaseColumns._ID,
             ShopPlanContract.ProductEntry.COLUMN_NAME,

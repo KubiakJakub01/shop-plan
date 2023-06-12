@@ -1,4 +1,4 @@
-package com.example.shopplan.model
+package com.example.shopplan.model.table
 
 import android.os.Parcel
 import android.os.Parcelable

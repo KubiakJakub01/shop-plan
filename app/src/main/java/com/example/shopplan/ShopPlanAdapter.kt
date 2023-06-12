@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
+import com.example.shopplan.model.table.ShopPlanModel
 
 class ShopPlanAdapter() :
     RecyclerView.Adapter<ShopPlanAdapter.ShopPlanViewHolder>() {
@@ -63,5 +63,4 @@ class ShopPlanAdapter() :
             notifyItemChanged(index)
         }
     }
-
 }
