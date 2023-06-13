@@ -104,7 +104,7 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener  {
 
             val itemCost = quantity * price
             // Create a new item object with the input values
-            val newItem = ProductModel(productName, price, quantity)
+            val newItem = ProductModel(name=productName, price=price, quantity=quantity)
 
             // Add the new item to the adapter
             adapter.addItem(newItem)

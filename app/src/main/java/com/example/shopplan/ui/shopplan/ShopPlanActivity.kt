@@ -72,8 +72,8 @@ class ShopPlanActivity : ComponentActivity() {
             val totalCost = data?.getDoubleExtra("totalCost", 0.0)
             val products = data?.getParcelableArrayListExtra<ProductModel>("products")
 
-            val shopPlan = ShopPlanModel(title.toString(), shop.toString(),
-                totalCost.toString().toDouble(), products as ArrayList<ProductModel>)
+            val shopPlan = ShopPlanModel(title=title.toString(), shopName=shop.toString(),
+                totalCost=totalCost.toString().toDouble(), products=products as ArrayList<ProductModel>)
             Log.i(TAG, "onActivityResult retrieve: $shopPlan")
             if (requestCode == NEW_SHOP_PLAN_FORM_REQUEST_CODE) {
                 Log.i(TAG, "onActivityResult NEW_SHOP_PLAN_FORM_REQUEST_CODE")

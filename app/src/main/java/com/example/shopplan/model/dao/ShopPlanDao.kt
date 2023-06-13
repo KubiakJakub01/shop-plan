@@ -23,4 +23,11 @@ class ShopPlanDao(shopPlanDbHelper: ShopPlanDbHelper) {
     }
 
     fun getShopPlans() = shopPlans as LiveData<List<ShopPlanModel>>
+
+    fun updateShopPlan(shopPlan: ShopPlanModel) {
+        val index = shopPlanList.indexOfFirst { it.shopPlanID == shopPlan.shopPlanID }
+        shopPlanList[index] = shopPlan
+        shopPlans.value = shopPlanList
+        shopPlanManager.updateShopPlan(shopPlan)
+    }
 }

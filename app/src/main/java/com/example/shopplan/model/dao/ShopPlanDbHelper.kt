@@ -18,6 +18,8 @@ class ShopPlanDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Handle database upgrades if needed
+        db.execSQL(ShopPlanContract.SQL_DELETE_SHOP_PLAN_TABLE)
+        db.execSQL(ShopPlanContract.SQL_DELETE_PRODUCT_TABLE)
+        onCreate(db)
     }
 }
