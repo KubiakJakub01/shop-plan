@@ -97,7 +97,7 @@ class ProductAdapter() :
         checkedPositions.clear()
         notifyDataSetChanged()
     }
-    fun getCheckedItems(): ArrayList<ProductModel> {
+    private fun getCheckedItems(): ArrayList<ProductModel> {
         val checkedItems = ArrayList<ProductModel>()
         for (position in checkedPositions) {
             checkedItems.add(productList[position])

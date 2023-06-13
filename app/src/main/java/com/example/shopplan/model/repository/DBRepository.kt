@@ -1,6 +1,7 @@
 package com.example.shopplan.model.repository
 
 import android.content.Context
+import com.example.shopplan.model.dao.ShopPlanDao
 import com.example.shopplan.model.dao.ShopPlanDbHelper
 import com.example.shopplan.model.menager.ProductManager
 import com.example.shopplan.model.menager.ShopPlanManager
@@ -10,13 +11,11 @@ import com.example.shopplan.model.menager.ShopPlanManager
  */
 class DBRepository private constructor(context: Context) {
     private var dbHelper: ShopPlanDbHelper
-    private var shopPlanManager: ShopPlanManager
-    private var productManager: ProductManager
+    private var shopPlanDao: ShopPlanDao
 
     init {
         this.dbHelper = ShopPlanDbHelper(context)
-        shopPlanManager = ShopPlanManager(dbHelper)
-        productManager = ProductManager(dbHelper)
+        this.shopPlanDao = ShopPlanDao(dbHelper)
     }
 
     companion object {
@@ -30,11 +29,7 @@ class DBRepository private constructor(context: Context) {
         }
     }
 
-    fun getShopPlanManager(): ShopPlanManager {
-        return shopPlanManager
-    }
-
-    fun getProductManager(): ProductManager {
-        return productManager
+    fun getShopPlanDao(): ShopPlanDao {
+        return shopPlanDao
     }
 }

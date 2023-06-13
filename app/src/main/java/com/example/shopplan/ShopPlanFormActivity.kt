@@ -143,8 +143,4 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener  {
         setResult(RESULT_OK, resultIntent)
         finish()
     }
-
-    fun deleteCheckedItems() {
-        adapter.deleteCheckedItems()
-    }
 }
