@@ -1,4 +1,4 @@
-package com.example.shopplan
+package com.example.shopplan.ui.shopplan
 
 import android.app.Activity
 import android.content.Intent
@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.shopplan.R
+import com.example.shopplan.ShopPlanFormActivity
+import com.example.shopplan.model.menager.ShopPlanManager
 import com.example.shopplan.model.table.ShopPlanModel
 
 class ShopPlanAdapter() :
@@ -62,5 +65,11 @@ class ShopPlanAdapter() :
             shopPlanList[index] = shopPlan
             notifyItemChanged(index)
         }
+    }
+
+    fun setShopPlans(shopPlans: List<ShopPlanModel>) {
+        shopPlanList.clear()
+        shopPlanList.addAll(shopPlans)
+        notifyDataSetChanged()
     }
 }

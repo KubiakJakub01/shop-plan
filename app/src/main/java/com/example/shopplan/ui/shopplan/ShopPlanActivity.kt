@@ -1,4 +1,4 @@
-package com.example.shopplan
+package com.example.shopplan.ui.shopplan
 
 import android.app.Activity
 import android.os.Bundle
@@ -7,19 +7,22 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.shopplan.model.repository.ShopPlanRepository
+import com.example.shopplan.R
+import com.example.shopplan.ShopPlanFormActivity
 import com.example.shopplan.model.table.ProductModel
 import com.example.shopplan.model.table.ShopPlanModel
+import com.example.shopplan.utils.InjectorUtils
 
-class MainActivity : ComponentActivity() {
+class ShopPlanActivity : ComponentActivity() {
 
-    private val TAG = "MainActivity"
+    private val TAG = "ShopPlanActivity"
     private lateinit var adapter: ShopPlanAdapter
     private lateinit var rvShopPlans: RecyclerView
-//    private lateinit var shopPlanAdapter: ShopPlanAdapter
-    private lateinit var shopPlanRepository: ShopPlanRepository
+    private lateinit var shopPlanFactory: ShopPlanModelViewFactory
+    private lateinit var shopPlanViewModel: ShopPlanViewModel
     private lateinit var btnCreateShopPlan: Button
     companion object {
         private const val NEW_SHOP_PLAN_FORM_REQUEST_CODE = 1
@@ -28,16 +31,32 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initializeUI()
+    }
 
-        shopPlanRepository = ShopPlanRepository.getInstance(this)
+    private fun initializeUI(){
+        initViewModel()
+        initRecycleView()
+        initComponents()
+    }
 
+    private fun initViewModel(){
+        shopPlanFactory = InjectorUtils.provideShopPlanViewModelFactory(this)
+        shopPlanViewModel = ViewModelProvider(this, shopPlanFactory)[ShopPlanViewModel::class.java]
+        shopPlanViewModel.getShopPlans().observe(this) { shopPlans ->
+            adapter.setShopPlans(shopPlans)
+        }
+    }
+
+    private fun initRecycleView(){
         adapter = ShopPlanAdapter()
         rvShopPlans = findViewById(R.id.rvShopPlans)
         rvShopPlans.adapter = adapter
         rvShopPlans.layoutManager = LinearLayoutManager(this)
         rvShopPlans.setHasFixedSize(true)
-        fillShopPlanList()
+    }
 
+    private fun initComponents(){
         btnCreateShopPlan = findViewById(R.id.btnCreateShopPlan)
     }
 
@@ -59,11 +78,10 @@ class MainActivity : ComponentActivity() {
             if (requestCode == NEW_SHOP_PLAN_FORM_REQUEST_CODE) {
                 Log.i(TAG, "onActivityResult NEW_SHOP_PLAN_FORM_REQUEST_CODE")
                 adapter.addItem(shopPlan)
-                shopPlanRepository.getShopPlanDao().addShopPlan(shopPlan)
+                shopPlanViewModel.addShopPlan(shopPlan)
             } else if (requestCode == UPDATE_SHOP_PLAN_FORM_REQUEST_CODE) {
                 Log.i(TAG, "onActivityResult UPDATE_SHOP_PLAN_FORM_REQUEST_CODE")
                 adapter.updateItem(shopPlan)
-                shopPlanRepository.getShopPlanDao().updateShopPlan(shopPlan)
             }
         }
     }
@@ -71,13 +89,6 @@ class MainActivity : ComponentActivity() {
     fun openShopPlanForm(view: View) {
         val intent = Intent(this, ShopPlanFormActivity::class.java)
         startActivityForResult(intent, NEW_SHOP_PLAN_FORM_REQUEST_CODE)
-    }
-
-    private fun fillShopPlanList() {
-        val shopPlans = shopPlanRepository.getShopPlanDao().getShopPlans()
-        for (shopPlan in shopPlans) {
-            adapter.addItem(shopPlan)
-        }
     }
 }
 

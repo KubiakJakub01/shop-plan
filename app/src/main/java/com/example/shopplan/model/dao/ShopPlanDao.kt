@@ -1,5 +1,6 @@
 package com.example.shopplan.model.dao
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.shopplan.model.menager.ShopPlanManager
 import com.example.shopplan.model.table.ShopPlanModel
@@ -21,5 +22,5 @@ class ShopPlanDao(shopPlanDbHelper: ShopPlanDbHelper) {
         shopPlanManager.addShopPlan(shopPlan)
     }
 
-    fun getShopPlans() = shopPlans as MutableLiveData<List<ShopPlanManager>>
+    fun getShopPlans() = shopPlans as LiveData<List<ShopPlanModel>>
 }
