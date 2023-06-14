@@ -1,11 +1,13 @@
 package com.example.shopplan.model.dao
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.shopplan.model.menager.ShopPlanManager
 import com.example.shopplan.model.table.ShopPlanModel
 
 class ShopPlanDao(shopPlanDbHelper: ShopPlanDbHelper) {
+    private val TAG = "ShopPlanDao"
     private var shopPlanList = mutableListOf<ShopPlanModel>()
     private val shopPlans = MutableLiveData<List<ShopPlanModel>>()
     private var shopPlanManager: ShopPlanManager
@@ -26,6 +28,7 @@ class ShopPlanDao(shopPlanDbHelper: ShopPlanDbHelper) {
 
     fun updateShopPlan(shopPlan: ShopPlanModel) {
         val index = shopPlanList.indexOfFirst { it.shopPlanID == shopPlan.shopPlanID }
+        Log.i(TAG, "updateShopPlan: index = $index. shopPlan = $shopPlan")
         shopPlanList[index] = shopPlan
         shopPlans.value = shopPlanList
         shopPlanManager.updateShopPlan(shopPlan)
