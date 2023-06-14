@@ -15,4 +15,8 @@ class ShopPlanViewModel(private val shopPlanRepository: ShopPlanRepository) : Vi
     fun updateShopPlan(shopPlan: ShopPlanModel) {
         shopPlanRepository.updateShopPlan(shopPlan)
     }
+
+    fun deleteShopPlan(shopPlan: ShopPlanModel) {
+        shopPlanRepository.deleteShopPlan(shopPlan)
+    }
 }

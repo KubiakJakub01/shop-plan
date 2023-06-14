@@ -33,4 +33,10 @@ class ShopPlanDao(shopPlanDbHelper: ShopPlanDbHelper) {
         shopPlans.value = shopPlanList
         shopPlanManager.updateShopPlan(shopPlan)
     }
+
+    fun deleteShopPlan(shopPlan: ShopPlanModel) {
+        shopPlanList.remove(shopPlan)
+        shopPlans.value = shopPlanList
+        shopPlanManager.deleteShopPlan(shopPlan)
+    }
 }
