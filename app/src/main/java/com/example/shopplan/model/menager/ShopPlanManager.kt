@@ -15,8 +15,8 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
     private val TAG = "ShopPlanManager"
     private val productManager = ProductManager(dbHelper)
     fun addShopPlan(shopPlan: ShopPlanModel) {
-        val db = dbHelper.writableDatabase
         Log.i(TAG, "addShopPlan: $shopPlan")
+        val db = dbHelper.writableDatabase
 
         val values = ContentValues().apply {
             put(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_PLAN_ID, shopPlan.shopPlanID)
@@ -79,7 +79,6 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
         val db = dbHelper.writableDatabase
 
         val values = ContentValues().apply {
-            put(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_PLAN_ID, shopPlan.shopPlanID)
             put(ShopPlanContract.ShopPlanEntry.COLUMN_TITLE, shopPlan.title)
             put(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_NAME, shopPlan.shopName)
             put(ShopPlanContract.ShopPlanEntry.COLUMN_TOTAL_COST, shopPlan.totalCost)
@@ -89,6 +88,8 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
         val selectionArgs = arrayOf(shopPlan.shopPlanID.toString())
 
         db.update(ShopPlanContract.ShopPlanEntry.TABLE_NAME, values, selection, selectionArgs)
+
+        productManager.replaceProducts(shopPlan.products, shopPlan.shopPlanID)
 
         db.close()
     }

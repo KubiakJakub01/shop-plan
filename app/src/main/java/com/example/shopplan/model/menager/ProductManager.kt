@@ -11,10 +11,12 @@ import com.example.shopplan.model.table.ProductModel
 class ProductManager(private val dbHelper: ShopPlanDbHelper) {
     private val TAG = "ProductManager"
     fun addProduct(product: ProductModel, shopPlanId: Int) {
+        Log.i(TAG, "addProduct: $product to shopPlanId = $shopPlanId")
         val db = dbHelper.writableDatabase
 
         val productValues = ContentValues().apply {
             put(ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID, shopPlanId)
+            put(ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID, product.productID)
             put(ShopPlanContract.ProductEntry.COLUMN_NAME, product.name)
             put(ShopPlanContract.ProductEntry.COLUMN_PRICE, product.price)
             put(ShopPlanContract.ProductEntry.COLUMN_QUANTITY, product.quantity)
@@ -32,6 +34,7 @@ class ProductManager(private val dbHelper: ShopPlanDbHelper) {
 
         val projection = arrayOf(
             ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID,
+            ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID,
             ShopPlanContract.ProductEntry.COLUMN_NAME,
             ShopPlanContract.ProductEntry.COLUMN_PRICE,
             ShopPlanContract.ProductEntry.COLUMN_QUANTITY
@@ -67,4 +70,45 @@ class ProductManager(private val dbHelper: ShopPlanDbHelper) {
         return products
     }
 
+    fun deleteProduct(shopPlanId: Int, productId: Int) {
+        val db = dbHelper.writableDatabase
+
+        val selection = "${ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID} = ? AND ${ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID} = ?"
+        val selectionArgs = arrayOf(shopPlanId.toString(), productId.toString())
+
+        db.delete(ShopPlanContract.ProductEntry.TABLE_NAME, selection, selectionArgs)
+
+        db.close()
+    }
+
+    fun replaceProducts(products: List<ProductModel>, shopPlanId: Int) {
+        val db = dbHelper.writableDatabase
+
+        val selection = "${ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID} = ?"
+        val selectionArgs = arrayOf(shopPlanId.toString())
+
+        db.delete(ShopPlanContract.ProductEntry.TABLE_NAME, selection, selectionArgs)
+
+        for (product in products) {
+            addProduct(product, shopPlanId)
+        }
+
+        db.close()
+    }
+    fun updateProduct(product: ProductModel, shopPlanId: Int) {
+        val db = dbHelper.writableDatabase
+
+        val values = ContentValues().apply {
+            put(ShopPlanContract.ProductEntry.COLUMN_NAME, product.name)
+            put(ShopPlanContract.ProductEntry.COLUMN_PRICE, product.price)
+            put(ShopPlanContract.ProductEntry.COLUMN_QUANTITY, product.quantity)
+        }
+
+        val selection = "${ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID} = ? AND ${ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID} = ?"
+        val selectionArgs = arrayOf(shopPlanId.toString(), product.productID.toString())
+
+        db.update(ShopPlanContract.ProductEntry.TABLE_NAME, values, selection, selectionArgs)
+
+        db.close()
+    }
 }
