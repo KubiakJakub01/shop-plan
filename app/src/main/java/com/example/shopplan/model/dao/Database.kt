@@ -5,10 +5,12 @@ import android.content.Context
 class Database private constructor(context: Context) {
     private var dbHelper: ShopPlanDbHelper
     private var shopPlanDao: ShopPlanDao
+    private var productDao: ProductDao
 
     init {
         this.dbHelper = ShopPlanDbHelper(context)
         this.shopPlanDao = ShopPlanDao(dbHelper)
+        this.productDao = ProductDao(dbHelper)
     }
 
     companion object {
@@ -23,4 +25,6 @@ class Database private constructor(context: Context) {
     }
 
     fun getShopPlanDao() = shopPlanDao
+
+    fun getProductDao() = productDao
 }

@@ -8,11 +8,15 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopplan.R
 import com.example.shopplan.model.table.ShopPlanModel
+import com.example.shopplan.utils.InjectorUtils
 import com.example.shopplan.view.shopplanform.product.ProductItemDialog
+import com.example.shopplan.viewmodel.shopplanform.ProductModelViewFactory
+import com.example.shopplan.viewmodel.shopplanform.ProductViewModel
 
 class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener {
     private val TAG = "ShopPlanFormActivity"
@@ -25,6 +29,8 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener {
     private lateinit var editTextShopName: EditText
     private lateinit var textViewTotalPrice: TextView
     private lateinit var buttonSave: Button
+    private lateinit var productModelViewFactory: ProductModelViewFactory
+    private lateinit var productViewModel: ProductViewModel
     private var shopPlanID: Int = 0
     private var totalCost: Double = 0.0
 
@@ -36,6 +42,7 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener {
     }
 
     private fun initializeUI() {
+        initViewModel()
         initializeRecyclerView()
         initComponents()
         val shopPlan = intent.getParcelableExtra<ShopPlanModel>("shopPlan")
@@ -44,6 +51,11 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener {
             shopPlanID = shopPlan.shopPlanID
         }
 
+    }
+
+    private fun initViewModel() {
+        productModelViewFactory = InjectorUtils.provideProductViewModelFactory(this)
+        productViewModel = ViewModelProvider(this, productModelViewFactory)[ProductViewModel::class.java]
     }
 
     private fun initializeRecyclerView() {

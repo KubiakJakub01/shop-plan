@@ -74,6 +74,49 @@ class ProductManager(private val dbHelper: ShopPlanDbHelper) {
         return products
     }
 
+    fun getProducts(): List<ProductModel> {
+        val db = dbHelper.readableDatabase
+        val products = mutableListOf<ProductModel>()
+
+        val projection = arrayOf(
+            ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID,
+            ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID,
+            ShopPlanContract.ProductEntry.COLUMN_NAME,
+            ShopPlanContract.ProductEntry.COLUMN_PRICE,
+            ShopPlanContract.ProductEntry.COLUMN_QUANTITY
+        )
+
+        val cursor: Cursor = db.query(
+            ShopPlanContract.ProductEntry.TABLE_NAME,
+            projection,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+
+        while (cursor.moveToNext()) {
+            val productId =
+                cursor.getInt(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID))
+            val name =
+                cursor.getString(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_NAME))
+            val price =
+                cursor.getDouble(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_PRICE))
+            val quantity =
+                cursor.getInt(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_QUANTITY))
+
+            val product = ProductModel(productId, name, price, quantity)
+            products.add(product)
+        }
+        Log.i(TAG, "getProducts: $products")
+
+        cursor.close()
+        db.close()
+
+        return products
+    }
+
     fun deleteProduct(shopPlanId: Int, productId: Int) {
         val db = dbHelper.writableDatabase
 
@@ -101,7 +144,7 @@ class ProductManager(private val dbHelper: ShopPlanDbHelper) {
         db.close()
     }
 
-    fun updateProduct(product: ProductModel, shopPlanId: Int) {
+    fun updateProductForShopPlan(product: ProductModel, shopPlanId: Int) {
         val db = dbHelper.writableDatabase
 
         val values = ContentValues().apply {
@@ -113,6 +156,24 @@ class ProductManager(private val dbHelper: ShopPlanDbHelper) {
         val selection =
             "${ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID} = ? AND ${ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID} = ?"
         val selectionArgs = arrayOf(shopPlanId.toString(), product.productID.toString())
+
+        db.update(ShopPlanContract.ProductEntry.TABLE_NAME, values, selection, selectionArgs)
+
+        db.close()
+    }
+
+    fun updateProduct(product: ProductModel) {
+        val db = dbHelper.writableDatabase
+
+        val values = ContentValues().apply {
+            put(ShopPlanContract.ProductEntry.COLUMN_NAME, product.name)
+            put(ShopPlanContract.ProductEntry.COLUMN_PRICE, product.price)
+            put(ShopPlanContract.ProductEntry.COLUMN_QUANTITY, product.quantity)
+        }
+
+        val selection =
+            "${ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID} = ?"
+        val selectionArgs = arrayOf(product.productID.toString())
 
         db.update(ShopPlanContract.ProductEntry.TABLE_NAME, values, selection, selectionArgs)
 
