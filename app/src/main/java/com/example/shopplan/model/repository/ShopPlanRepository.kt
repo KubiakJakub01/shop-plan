@@ -15,6 +15,10 @@ class ShopPlanRepository private constructor(private val shopPlanDao: ShopPlanDa
     }
 
     fun getShopPlans() = shopPlanDao.getShopPlans()
+    fun updateShopPlan(shopPlan: ShopPlanModel) {
+        shopPlanDao.updateShopPlan(shopPlan)
+    }
+
     companion object {
         @Volatile
         private var instance: ShopPlanRepository? = null
