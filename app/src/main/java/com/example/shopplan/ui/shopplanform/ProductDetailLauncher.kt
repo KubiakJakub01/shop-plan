@@ -1,5 +1,3 @@
-package com.example.shopplan
+package com.example.shopplan.ui.shopplanform
 
-class ProductDetailLauncher {
-
-}
+class ProductDetailLauncher

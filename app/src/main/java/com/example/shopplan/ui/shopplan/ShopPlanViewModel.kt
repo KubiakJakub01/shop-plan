@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.shopplan.model.repository.ShopPlanRepository
 import com.example.shopplan.model.table.ShopPlanModel
 
-class ShopPlanViewModel(private val shopPlanRepository: ShopPlanRepository)
-    : ViewModel() {
+class ShopPlanViewModel(private val shopPlanRepository: ShopPlanRepository) : ViewModel() {
 
     fun addShopPlan(shopPlan: ShopPlanModel) {
         shopPlanRepository.addShopPlan(shopPlan)

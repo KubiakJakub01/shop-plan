@@ -1,8 +1,8 @@
 package com.example.shopplan.ui.shopplan
 
 import android.app.Activity
-import android.os.Bundle
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -11,9 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopplan.R
-import com.example.shopplan.ui.shopplanform.ShopPlanFormActivity
 import com.example.shopplan.model.table.ProductModel
 import com.example.shopplan.model.table.ShopPlanModel
+import com.example.shopplan.ui.shopplanform.ShopPlanFormActivity
 import com.example.shopplan.utils.InjectorUtils
 
 class ShopPlanActivity : ComponentActivity() {
@@ -24,23 +24,25 @@ class ShopPlanActivity : ComponentActivity() {
     private lateinit var shopPlanFactory: ShopPlanModelViewFactory
     private lateinit var shopPlanViewModel: ShopPlanViewModel
     private lateinit var btnCreateShopPlan: Button
+
     companion object {
         private const val NEW_SHOP_PLAN_FORM_REQUEST_CODE = 1
         private const val UPDATE_SHOP_PLAN_FORM_REQUEST_CODE = 2
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initializeUI()
     }
 
-    private fun initializeUI(){
+    private fun initializeUI() {
         initViewModel()
         initRecycleView()
         initComponents()
     }
 
-    private fun initViewModel(){
+    private fun initViewModel() {
         shopPlanFactory = InjectorUtils.provideShopPlanViewModelFactory(this)
         shopPlanViewModel = ViewModelProvider(this, shopPlanFactory)[ShopPlanViewModel::class.java]
         shopPlanViewModel.getShopPlans().observe(this) { shopPlans ->
@@ -48,7 +50,7 @@ class ShopPlanActivity : ComponentActivity() {
         }
     }
 
-    private fun initRecycleView(){
+    private fun initRecycleView() {
         adapter = ShopPlanAdapter()
         rvShopPlans = findViewById(R.id.rvShopPlans)
         rvShopPlans.adapter = adapter
@@ -56,12 +58,15 @@ class ShopPlanActivity : ComponentActivity() {
         rvShopPlans.setHasFixedSize(true)
     }
 
-    private fun initComponents(){
+    private fun initComponents() {
         btnCreateShopPlan = findViewById(R.id.btnCreateShopPlan)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.i(TAG, "onActivityResult. requestCode: $requestCode, resultCode: $resultCode, data: $data")
+        Log.i(
+            TAG,
+            "onActivityResult. requestCode: $requestCode, resultCode: $resultCode, data: $data"
+        )
         super.onActivityResult(requestCode, resultCode, data)
 
         // Check if the request code is the same as what is passed here
@@ -74,14 +79,23 @@ class ShopPlanActivity : ComponentActivity() {
             val products = data?.getParcelableArrayListExtra<ProductModel>("products")
 
             if (requestCode == NEW_SHOP_PLAN_FORM_REQUEST_CODE) {
-                val shopPlan = ShopPlanModel(title=title.toString(), shopName = shop.toString(),
-                    totalCost = totalCost.toString().toDouble(), products = products as ArrayList<ProductModel>)
+                val shopPlan = ShopPlanModel(
+                    title = title.toString(),
+                    shopName = shop.toString(),
+                    totalCost = totalCost.toString().toDouble(),
+                    products = products as ArrayList<ProductModel>
+                )
                 Log.i(TAG, "onActivityResult NEW_SHOP_PLAN_FORM_REQUEST_CODE: $shopPlan")
                 adapter.addItem(shopPlan)
                 shopPlanViewModel.addShopPlan(shopPlan)
             } else if (requestCode == UPDATE_SHOP_PLAN_FORM_REQUEST_CODE) {
-                val shopPlan = ShopPlanModel(shopPlanID = shopPlanID!!, title=title.toString(), shopName = shop.toString(),
-                    totalCost = totalCost.toString().toDouble(), products = products as ArrayList<ProductModel>)
+                val shopPlan = ShopPlanModel(
+                    shopPlanID = shopPlanID!!,
+                    title = title.toString(),
+                    shopName = shop.toString(),
+                    totalCost = totalCost.toString().toDouble(),
+                    products = products as ArrayList<ProductModel>
+                )
                 Log.i(TAG, "onActivityResult UPDATE_SHOP_PLAN_FORM_REQUEST_CODE $shopPlan")
                 adapter.updateItem(shopPlan)
                 shopPlanViewModel.updateShopPlan(shopPlan)

@@ -54,10 +54,14 @@ class ProductManager(private val dbHelper: ShopPlanDbHelper) {
         )
 
         while (cursor.moveToNext()) {
-            val productId = cursor.getInt(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID))
-            val name = cursor.getString(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_NAME))
-            val price = cursor.getDouble(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_PRICE))
-            val quantity = cursor.getInt(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_QUANTITY))
+            val productId =
+                cursor.getInt(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID))
+            val name =
+                cursor.getString(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_NAME))
+            val price =
+                cursor.getDouble(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_PRICE))
+            val quantity =
+                cursor.getInt(cursor.getColumnIndexOrThrow(ShopPlanContract.ProductEntry.COLUMN_QUANTITY))
 
             val product = ProductModel(productId, name, price, quantity)
             products.add(product)
@@ -73,7 +77,8 @@ class ProductManager(private val dbHelper: ShopPlanDbHelper) {
     fun deleteProduct(shopPlanId: Int, productId: Int) {
         val db = dbHelper.writableDatabase
 
-        val selection = "${ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID} = ? AND ${ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID} = ?"
+        val selection =
+            "${ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID} = ? AND ${ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID} = ?"
         val selectionArgs = arrayOf(shopPlanId.toString(), productId.toString())
 
         db.delete(ShopPlanContract.ProductEntry.TABLE_NAME, selection, selectionArgs)
@@ -95,6 +100,7 @@ class ProductManager(private val dbHelper: ShopPlanDbHelper) {
 
         db.close()
     }
+
     fun updateProduct(product: ProductModel, shopPlanId: Int) {
         val db = dbHelper.writableDatabase
 
@@ -104,7 +110,8 @@ class ProductManager(private val dbHelper: ShopPlanDbHelper) {
             put(ShopPlanContract.ProductEntry.COLUMN_QUANTITY, product.quantity)
         }
 
-        val selection = "${ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID} = ? AND ${ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID} = ?"
+        val selection =
+            "${ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID} = ? AND ${ShopPlanContract.ProductEntry.COLUMN_PRODUCT_ID} = ?"
         val selectionArgs = arrayOf(shopPlanId.toString(), product.productID.toString())
 
         db.update(ShopPlanContract.ProductEntry.TABLE_NAME, values, selection, selectionArgs)

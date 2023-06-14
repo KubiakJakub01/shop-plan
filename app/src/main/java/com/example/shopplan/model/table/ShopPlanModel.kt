@@ -3,7 +3,6 @@ package com.example.shopplan.model.table
 import android.os.Parcel
 import android.os.Parcelable
 import java.util.Random
-import java.util.UUID
 
 data class ShopPlanModel(
     val shopPlanID: Int = getAutoId(),
@@ -19,8 +18,7 @@ data class ShopPlanModel(
         parcel.readString().toString(),
         parcel.readDouble(),
         parcel.createTypedArrayList(ProductModel) as List<ProductModel>
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(shopPlanID)
@@ -35,10 +33,11 @@ data class ShopPlanModel(
     }
 
     companion object CREATOR : Parcelable.Creator<ShopPlanModel> {
-        fun getAutoId(): Int{
+        fun getAutoId(): Int {
             val random = Random()
             return random.nextInt(10000)
         }
+
         override fun createFromParcel(parcel: Parcel): ShopPlanModel {
             return ShopPlanModel(parcel)
         }

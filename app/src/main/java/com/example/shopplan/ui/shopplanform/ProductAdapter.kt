@@ -1,4 +1,4 @@
-package com.example.shopplan
+package com.example.shopplan.ui.shopplanform
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +7,10 @@ import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.shopplan.R
 import com.example.shopplan.model.table.ProductModel
 
-class ProductAdapter() :
+class ProductAdapter :
     RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     private val productList = ArrayList<ProductModel>()
@@ -41,37 +42,37 @@ class ProductAdapter() :
         }
     }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_product, parent, false)
-            return ProductViewHolder(view)
-        }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_product, parent, false)
+        return ProductViewHolder(view)
+    }
 
-        override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
-            val product = productList[position]
+    override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
+        val product = productList[position]
 
-            holder.bind(product)
+        holder.bind(product)
 
-            holder.buttonMinus.setOnClickListener {
-                val updatedQuantity = product.quantity - 1
-                if (updatedQuantity >= 0) {
-                    product.quantity = updatedQuantity
-                    quantityChangeListener?.onQuantityChanged((-1) * product.price)
-                    notifyItemChanged(position)
-                }
-            }
-
-            holder.buttonPlus.setOnClickListener {
-                val updatedQuantity = product.quantity + 1
+        holder.buttonMinus.setOnClickListener {
+            val updatedQuantity = product.quantity - 1
+            if (updatedQuantity >= 0) {
                 product.quantity = updatedQuantity
-                quantityChangeListener?.onQuantityChanged(product.price)
+                quantityChangeListener?.onQuantityChanged((-1) * product.price)
                 notifyItemChanged(position)
             }
         }
 
-        override fun getItemCount(): Int {
-            return productList.size
+        holder.buttonPlus.setOnClickListener {
+            val updatedQuantity = product.quantity + 1
+            product.quantity = updatedQuantity
+            quantityChangeListener?.onQuantityChanged(product.price)
+            notifyItemChanged(position)
         }
+    }
+
+    override fun getItemCount(): Int {
+        return productList.size
+    }
 
     fun addItem(product: ProductModel) {
         productList.add(product)
@@ -97,6 +98,7 @@ class ProductAdapter() :
         checkedPositions.clear()
         notifyDataSetChanged()
     }
+
     private fun getCheckedItems(): ArrayList<ProductModel> {
         val checkedItems = ArrayList<ProductModel>()
         for (position in checkedPositions) {

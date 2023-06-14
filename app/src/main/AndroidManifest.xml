@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ShopPlanFormActivity"
+            android:name=".ui.shopplanform.ShopPlanFormActivity"
             android:label="@string/shop_plan_form"
             android:theme="@style/Theme.AppCompat">
         </activity>

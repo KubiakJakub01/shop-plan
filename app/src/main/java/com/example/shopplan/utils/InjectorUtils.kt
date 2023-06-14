@@ -8,7 +8,8 @@ import com.example.shopplan.ui.shopplan.ShopPlanModelViewFactory
 object InjectorUtils {
 
     fun provideShopPlanViewModelFactory(context: Context): ShopPlanModelViewFactory {
-        val shopPlanRepository = ShopPlanRepository.getInstance(Database.getInstance(context).getShopPlanDao())
+        val shopPlanRepository =
+            ShopPlanRepository.getInstance(Database.getInstance(context).getShopPlanDao())
         return ShopPlanModelViewFactory(shopPlanRepository)
     }
 }

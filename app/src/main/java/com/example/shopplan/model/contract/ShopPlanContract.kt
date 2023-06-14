@@ -1,7 +1,5 @@
 package com.example.shopplan.model.contract
 
-import android.provider.BaseColumns
-
 object ShopPlanContract {
     // Define table names
     object ShopPlanEntry {
@@ -21,9 +19,9 @@ object ShopPlanContract {
         const val COLUMN_QUANTITY = "quantity"
     }
 
-    val SQL_DELETE_PRODUCT_TABLE: String?
+    val SQL_DELETE_PRODUCT_TABLE: String
         get() = "DROP TABLE IF EXISTS ${ProductEntry.TABLE_NAME}"
-    val SQL_DELETE_SHOP_PLAN_TABLE: String?
+    val SQL_DELETE_SHOP_PLAN_TABLE: String
         get() = "DROP TABLE IF EXISTS ${ShopPlanEntry.TABLE_NAME}"
 
 

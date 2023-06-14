@@ -2,7 +2,7 @@ package com.example.shopplan.model.dao
 
 import android.content.Context
 
-class Database private constructor(context: Context){
+class Database private constructor(context: Context) {
     private var dbHelper: ShopPlanDbHelper
     private var shopPlanDao: ShopPlanDao
 

@@ -2,13 +2,9 @@ package com.example.shopplan.model.menager
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import android.provider.BaseColumns
 import android.util.Log
 import com.example.shopplan.model.contract.ShopPlanContract
 import com.example.shopplan.model.dao.ShopPlanDbHelper
-import com.example.shopplan.model.table.ProductModel
 import com.example.shopplan.model.table.ShopPlanModel
 
 class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
@@ -58,10 +54,14 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
         val shopPlans = mutableListOf<ShopPlanModel>()
 
         while (cursor.moveToNext()) {
-            val shopPlanId = cursor.getInt(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_PLAN_ID))
-            val title = cursor.getString(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_TITLE))
-            val shopName = cursor.getString(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_NAME))
-            val totalCost = cursor.getDouble(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_TOTAL_COST))
+            val shopPlanId =
+                cursor.getInt(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_PLAN_ID))
+            val title =
+                cursor.getString(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_TITLE))
+            val shopName =
+                cursor.getString(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_NAME))
+            val totalCost =
+                cursor.getDouble(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_TOTAL_COST))
 
             val products = productManager.getProductsForShopPlan(shopPlanId.toString())
 

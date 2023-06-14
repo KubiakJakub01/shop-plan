@@ -1,13 +1,12 @@
 package com.example.shopplan.ui.shopplanform
 
 import android.app.Dialog
-import android.content.Context
 import android.widget.Button
 import android.widget.EditText
 import com.example.shopplan.R
 import com.example.shopplan.model.table.ProductModel
 
-class ProductItemDialog (private val shopPlanFormActivity: ShopPlanFormActivity){
+class ProductItemDialog(private val shopPlanFormActivity: ShopPlanFormActivity) {
     fun showItemDialog() {
         val dialog = Dialog(shopPlanFormActivity)
         dialog.setContentView(R.layout.dialog_add_product)
@@ -28,7 +27,7 @@ class ProductItemDialog (private val shopPlanFormActivity: ShopPlanFormActivity)
 
             val itemCost = quantity * price
             // Create a new item object with the input values
-            val newItem = ProductModel(name=productName, price=price, quantity=quantity)
+            val newItem = ProductModel(name = productName, price = price, quantity = quantity)
 
             // Add the new item to the adapter
             shopPlanFormActivity.getAdapter().addItem(newItem)

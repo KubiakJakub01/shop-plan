@@ -1,8 +1,6 @@
 package com.example.shopplan.model.repository
 
-import android.content.Context
 import com.example.shopplan.model.dao.ShopPlanDao
-import com.example.shopplan.model.dao.ShopPlanDbHelper
 import com.example.shopplan.model.table.ShopPlanModel
 
 /**
