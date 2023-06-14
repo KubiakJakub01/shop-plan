@@ -1,4 +1,4 @@
-package com.example.shopplan
+package com.example.shopplan.view.shopplanform
 
 interface QuantityChangeListener {
     fun onQuantityChanged(costChange: Double)

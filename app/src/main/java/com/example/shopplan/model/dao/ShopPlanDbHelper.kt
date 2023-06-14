@@ -5,7 +5,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.shopplan.model.contract.ShopPlanContract
 
-class ShopPlanDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class ShopPlanDbHelper(context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     companion object {
         const val DATABASE_NAME = "shop_plan.db"
@@ -18,6 +19,8 @@ class ShopPlanDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NA
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Handle database upgrades if needed
+        db.execSQL(ShopPlanContract.SQL_DELETE_SHOP_PLAN_TABLE)
+        db.execSQL(ShopPlanContract.SQL_DELETE_PRODUCT_TABLE)
+        onCreate(db)
     }
 }

@@ -2,34 +2,29 @@ package com.example.shopplan.model.menager
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
-import android.database.sqlite.SQLiteDatabase
-import android.provider.BaseColumns
+import android.util.Log
 import com.example.shopplan.model.contract.ShopPlanContract
 import com.example.shopplan.model.dao.ShopPlanDbHelper
-import com.example.shopplan.model.table.ProductModel
 import com.example.shopplan.model.table.ShopPlanModel
 
 class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
-
+    private val TAG = "ShopPlanManager"
+    private val productManager = ProductManager(dbHelper)
     fun addShopPlan(shopPlan: ShopPlanModel) {
+        Log.i(TAG, "addShopPlan: $shopPlan")
         val db = dbHelper.writableDatabase
 
-        val shopPlanValues = ContentValues().apply {
+        val values = ContentValues().apply {
+            put(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_PLAN_ID, shopPlan.shopPlanID)
             put(ShopPlanContract.ShopPlanEntry.COLUMN_TITLE, shopPlan.title)
             put(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_NAME, shopPlan.shopName)
             put(ShopPlanContract.ShopPlanEntry.COLUMN_TOTAL_COST, shopPlan.totalCost)
         }
 
-        val shopPlanId = db.insert(ShopPlanContract.ShopPlanEntry.TABLE_NAME, null, shopPlanValues)
+        db.insert(ShopPlanContract.ShopPlanEntry.TABLE_NAME, null, values)
 
-        for (product in shopPlan.products) {
-            val productValues = ContentValues().apply {
-                put(ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID, shopPlanId)
-                put(ShopPlanContract.ProductEntry.COLUMN_NAME, product.name)
-                put(ShopPlanContract.ProductEntry.COLUMN_PRICE, product.price)
-                put(ShopPlanContract.ProductEntry.COLUMN_QUANTITY, product.quantity)
-            }
-            db.insert(ShopPlanContract.ProductEntry.TABLE_NAME, null, productValues)
+        shopPlan.products.forEach {
+            productManager.addProduct(it, shopPlan.shopPlanID)
         }
 
         db.close()
@@ -38,10 +33,9 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
     @SuppressLint("Range")
     fun getShopPlans(): List<ShopPlanModel> {
         val db = dbHelper.readableDatabase
-        val shopPlanList = mutableListOf<ShopPlanModel>()
 
         val projection = arrayOf(
-            BaseColumns._ID,
+            ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_PLAN_ID,
             ShopPlanContract.ShopPlanEntry.COLUMN_TITLE,
             ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_NAME,
             ShopPlanContract.ShopPlanEntry.COLUMN_TOTAL_COST
@@ -57,8 +51,11 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
             null
         )
 
+        val shopPlans = mutableListOf<ShopPlanModel>()
+
         while (cursor.moveToNext()) {
-            val shopPlanId = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID))
+            val shopPlanId =
+                cursor.getInt(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_PLAN_ID))
             val title =
                 cursor.getString(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_TITLE))
             val shopName =
@@ -66,85 +63,44 @@ class ShopPlanManager(private val dbHelper: ShopPlanDbHelper) {
             val totalCost =
                 cursor.getDouble(cursor.getColumnIndex(ShopPlanContract.ShopPlanEntry.COLUMN_TOTAL_COST))
 
-            val products = getProductsForShopPlan(db, shopPlanId)
+            val products = productManager.getProductsForShopPlan(shopPlanId.toString())
 
-            val shopPlan = ShopPlanModel(title, shopName, totalCost, products)
-            shopPlanList.add(shopPlan)
+            shopPlans.add(ShopPlanModel(shopPlanId, title, shopName, totalCost, products))
         }
+        Log.i(TAG, "getShopPlans: $shopPlans")
 
         cursor.close()
         db.close()
 
-        return shopPlanList
-    }
-
-    @SuppressLint("Range")
-    private fun getProductsForShopPlan(db: SQLiteDatabase, shopPlanId: Long): List<ProductModel> {
-        val projection = arrayOf(
-            BaseColumns._ID,
-            ShopPlanContract.ProductEntry.COLUMN_NAME,
-            ShopPlanContract.ProductEntry.COLUMN_PRICE,
-            ShopPlanContract.ProductEntry.COLUMN_QUANTITY
-        )
-
-        val selection = "${ShopPlanContract.ProductEntry.COLUMN_SHOP_PLAN_ID} = ?"
-        val selectionArgs = arrayOf(shopPlanId.toString())
-
-        val cursor = db.query(
-            ShopPlanContract.ProductEntry.TABLE_NAME,
-            projection,
-            selection,
-            selectionArgs,
-            null,
-            null,
-            null
-        )
-
-        val productList = mutableListOf<ProductModel>()
-
-        while (cursor.moveToNext()) {
-            val name =
-                cursor.getString(cursor.getColumnIndex(ShopPlanContract.ProductEntry.COLUMN_NAME))
-            val price =
-                cursor.getDouble(cursor.getColumnIndex(ShopPlanContract.ProductEntry.COLUMN_PRICE))
-            val quantity =
-                cursor.getInt(cursor.getColumnIndex(ShopPlanContract.ProductEntry.COLUMN_QUANTITY))
-
-            val product = ProductModel(name, price, quantity)
-            productList.add(product)
-        }
-
-        cursor.close()
-
-        return productList
-    }
-
-    // TODO: Implement other CRUD operations (update, delete) as needed
-
-    public fun deleteShopPlan(shopPlan: ShopPlanModel) {
-        val db = dbHelper.writableDatabase
-
-        val selection = "${ShopPlanContract.ShopPlanEntry.COLUMN_TITLE} LIKE ?"
-        val selectionArgs = arrayOf(shopPlan.title)
-
-        db.delete(ShopPlanContract.ShopPlanEntry.TABLE_NAME, selection, selectionArgs)
-
-        db.close()
+        return shopPlans
     }
 
     fun updateShopPlan(shopPlan: ShopPlanModel) {
         val db = dbHelper.writableDatabase
 
-        val selection = "${ShopPlanContract.ShopPlanEntry.COLUMN_TITLE} LIKE ?"
-        val selectionArgs = arrayOf(shopPlan.title)
-
-        val shopPlanValues = ContentValues().apply {
+        val values = ContentValues().apply {
             put(ShopPlanContract.ShopPlanEntry.COLUMN_TITLE, shopPlan.title)
             put(ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_NAME, shopPlan.shopName)
             put(ShopPlanContract.ShopPlanEntry.COLUMN_TOTAL_COST, shopPlan.totalCost)
         }
 
-        db.update(ShopPlanContract.ShopPlanEntry.TABLE_NAME, shopPlanValues, selection, selectionArgs)
+        val selection = "${ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_PLAN_ID} LIKE ?"
+        val selectionArgs = arrayOf(shopPlan.shopPlanID.toString())
+
+        db.update(ShopPlanContract.ShopPlanEntry.TABLE_NAME, values, selection, selectionArgs)
+
+        productManager.replaceProducts(shopPlan.products, shopPlan.shopPlanID)
+
+        db.close()
+    }
+
+    fun deleteShopPlan(shopPlan: ShopPlanModel) {
+        val db = dbHelper.writableDatabase
+
+        val selection = "${ShopPlanContract.ShopPlanEntry.COLUMN_SHOP_PLAN_ID} LIKE ?"
+        val selectionArgs = arrayOf(shopPlan.shopPlanID.toString())
+
+        db.delete(ShopPlanContract.ShopPlanEntry.TABLE_NAME, selection, selectionArgs)
 
         db.close()
     }
