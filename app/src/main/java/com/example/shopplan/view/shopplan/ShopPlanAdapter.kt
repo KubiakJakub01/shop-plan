@@ -1,4 +1,4 @@
-package com.example.shopplan.ui.shopplan
+package com.example.shopplan.view.shopplan
 
 import android.app.Activity
 import android.content.Intent
@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopplan.R
 import com.example.shopplan.model.table.ShopPlanModel
-import com.example.shopplan.ui.shopplanform.ShopPlanFormActivity
+import com.example.shopplan.view.shopplanform.ShopPlanFormActivity
 
 class ShopPlanAdapter :
     RecyclerView.Adapter<ShopPlanAdapter.ShopPlanViewHolder>() {

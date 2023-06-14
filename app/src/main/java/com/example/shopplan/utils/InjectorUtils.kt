@@ -3,7 +3,7 @@ package com.example.shopplan.utils
 import android.content.Context
 import com.example.shopplan.model.dao.Database
 import com.example.shopplan.model.repository.ShopPlanRepository
-import com.example.shopplan.ui.shopplan.ShopPlanModelViewFactory
+import com.example.shopplan.viewmodel.shopplan.ShopPlanModelViewFactory
 
 object InjectorUtils {
 

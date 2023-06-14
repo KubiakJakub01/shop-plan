@@ -1,4 +1,4 @@
-package com.example.shopplan.ui.shopplanform
+package com.example.shopplan.view.shopplanform
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopplan.R
 import com.example.shopplan.model.table.ShopPlanModel
+import com.example.shopplan.view.shopplanform.product.ProductItemDialog
 
 class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener {
     private val TAG = "ShopPlanFormActivity"

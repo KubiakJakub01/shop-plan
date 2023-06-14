@@ -1,4 +1,4 @@
-package com.example.shopplan.ui.shopplan
+package com.example.shopplan.viewmodel.shopplan
 
 import androidx.lifecycle.ViewModel
 import com.example.shopplan.model.repository.ShopPlanRepository

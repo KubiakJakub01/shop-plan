@@ -1,4 +1,4 @@
-package com.example.shopplan.ui.shopplanform
+package com.example.shopplan.view.shopplanform
 
 import android.view.LayoutInflater
 import android.view.View

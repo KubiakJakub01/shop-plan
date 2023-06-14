@@ -1,10 +1,11 @@
-package com.example.shopplan.ui.shopplanform
+package com.example.shopplan.view.shopplanform.product
 
 import android.app.Dialog
 import android.widget.Button
 import android.widget.EditText
 import com.example.shopplan.R
 import com.example.shopplan.model.table.ProductModel
+import com.example.shopplan.view.shopplanform.ShopPlanFormActivity
 
 class ProductItemDialog(private val shopPlanFormActivity: ShopPlanFormActivity) {
     fun showItemDialog() {
