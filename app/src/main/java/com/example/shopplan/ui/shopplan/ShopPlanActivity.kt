@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopplan.R
-import com.example.shopplan.ShopPlanFormActivity
+import com.example.shopplan.ui.shopplanform.ShopPlanFormActivity
 import com.example.shopplan.model.table.ProductModel
 import com.example.shopplan.model.table.ShopPlanModel
 import com.example.shopplan.utils.InjectorUtils
@@ -67,21 +67,24 @@ class ShopPlanActivity : ComponentActivity() {
         // Check if the request code is the same as what is passed here
         if (resultCode == Activity.RESULT_OK) {
             // Retrieve the information from the result intent
+            val shopPlanID = data?.getIntExtra("shopPlanID", 0)
             val title = data?.getStringExtra("title")
             val shop = data?.getStringExtra("shopName")
             val totalCost = data?.getDoubleExtra("totalCost", 0.0)
             val products = data?.getParcelableArrayListExtra<ProductModel>("products")
 
-            val shopPlan = ShopPlanModel(title=title.toString(), shopName=shop.toString(),
-                totalCost=totalCost.toString().toDouble(), products=products as ArrayList<ProductModel>)
-            Log.i(TAG, "onActivityResult retrieve: $shopPlan")
             if (requestCode == NEW_SHOP_PLAN_FORM_REQUEST_CODE) {
-                Log.i(TAG, "onActivityResult NEW_SHOP_PLAN_FORM_REQUEST_CODE")
+                val shopPlan = ShopPlanModel(title=title.toString(), shopName = shop.toString(),
+                    totalCost = totalCost.toString().toDouble(), products = products as ArrayList<ProductModel>)
+                Log.i(TAG, "onActivityResult NEW_SHOP_PLAN_FORM_REQUEST_CODE: $shopPlan")
                 adapter.addItem(shopPlan)
                 shopPlanViewModel.addShopPlan(shopPlan)
             } else if (requestCode == UPDATE_SHOP_PLAN_FORM_REQUEST_CODE) {
-                Log.i(TAG, "onActivityResult UPDATE_SHOP_PLAN_FORM_REQUEST_CODE")
+                val shopPlan = ShopPlanModel(shopPlanID = shopPlanID!!, title=title.toString(), shopName = shop.toString(),
+                    totalCost = totalCost.toString().toDouble(), products = products as ArrayList<ProductModel>)
+                Log.i(TAG, "onActivityResult UPDATE_SHOP_PLAN_FORM_REQUEST_CODE $shopPlan")
                 adapter.updateItem(shopPlan)
+                shopPlanViewModel.updateShopPlan(shopPlan)
             }
         }
     }

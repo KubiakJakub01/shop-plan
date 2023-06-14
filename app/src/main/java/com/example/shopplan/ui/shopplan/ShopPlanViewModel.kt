@@ -12,4 +12,8 @@ class ShopPlanViewModel(private val shopPlanRepository: ShopPlanRepository)
     }
 
     fun getShopPlans() = shopPlanRepository.getShopPlans()
+
+    fun updateShopPlan(shopPlan: ShopPlanModel) {
+        shopPlanRepository.updateShopPlan(shopPlan)
+    }
 }
