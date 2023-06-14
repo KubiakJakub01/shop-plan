@@ -1,4 +1,4 @@
-package com.example.shopplan.view.shopplan
+package com.example.shopplan.view.shopplan.adapter
 
 import android.app.Activity
 import android.content.Intent
@@ -14,7 +14,7 @@ import com.example.shopplan.R
 import com.example.shopplan.model.table.ShopPlanModel
 import com.example.shopplan.view.shopplanform.ShopPlanFormActivity
 
-class ShopPlanAdapter :
+class ShopPlanAdapter(private val shopPlanActionListener: ShopPlanActionListener) :
     RecyclerView.Adapter<ShopPlanAdapter.ShopPlanViewHolder>() {
 
     private val shopPlanList = ArrayList<ShopPlanModel>()
@@ -36,37 +36,10 @@ class ShopPlanAdapter :
             shopNameTextView.text = shopPlan.shopName
             productCountTextView.text = shopPlan.products.size.toString()
             totalCostTextView.text = shopPlan.totalCost.toString()
-
-
-        }
-    }
-
-    private fun popupMenu(view: View, holder: ShopPlanViewHolder, shopPlan: ShopPlanModel) {
-        val popupMenu = PopupMenu(view.context,view)
-        popupMenu.inflate(R.menu.item_shop_plan_popup)
-        popupMenu.setOnMenuItemClickListener {
-            when(it.itemId) {
-                R.id.edit_category -> {
-                    openShopPlanFormActivity(holder, shopPlan)
-                    true
-                }
-                R.id.delete_category -> {
-                    categoryActionListener.onCategoryDelete(category)
-                    true
-                }
-                else -> false
+            menuButton.setOnClickListener {
+                popupMenu(it, shopPlan)
             }
         }
-        popupMenu.setForceShowIcon(true)
-        popupMenu.gravity = Gravity.END;
-        popupMenu.show()
-    }
-
-    private fun openShopPlanFormActivity(holder: ShopPlanViewHolder, shopPlan: ShopPlanModel) {
-        val context = holder.itemView.context
-        val intent = Intent(context, ShopPlanFormActivity::class.java)
-        intent.putExtra("shopPlan", shopPlan)
-        (context as Activity).startActivityForResult(intent, UPDATE_SHOP_PLAN_FORM_REQUEST_CODE)
     }
 
     private fun deleteShopPlan(shopPlan: ShopPlanModel) {
@@ -87,7 +60,7 @@ class ShopPlanAdapter :
         holder.bind(shopPlan)
 
         holder.itemView.setOnClickListener {
-            openShopPlanFormActivity(holder, shopPlan)
+            shopPlanActionListener.openShopPlanFormActivity(shopPlan)
         }
     }
 
@@ -112,5 +85,26 @@ class ShopPlanAdapter :
         shopPlanList.clear()
         shopPlanList.addAll(shopPlans)
         notifyDataSetChanged()
+    }
+
+    private fun popupMenu(view: View, shopPlan: ShopPlanModel) {
+        val popupMenu = PopupMenu(view.context,view)
+        popupMenu.inflate(R.menu.item_shop_plan_popup)
+        popupMenu.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.edit_category -> {
+                    shopPlanActionListener.openShopPlanFormActivity(shopPlan)
+                    true
+                }
+                R.id.delete_category -> {
+                    shopPlanActionListener.deleteShopPlan(shopPlan)
+                    true
+                }
+                else -> false
+            }
+        }
+        popupMenu.setForceShowIcon(true)
+        popupMenu.gravity = Gravity.END;
+        popupMenu.show()
     }
 }

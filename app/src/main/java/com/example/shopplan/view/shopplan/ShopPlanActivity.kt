@@ -15,6 +15,8 @@ import com.example.shopplan.model.table.ProductModel
 import com.example.shopplan.model.table.ShopPlanModel
 import com.example.shopplan.view.shopplanform.ShopPlanFormActivity
 import com.example.shopplan.utils.InjectorUtils
+import com.example.shopplan.view.shopplan.adapter.ShopPlanActionListener
+import com.example.shopplan.view.shopplan.adapter.ShopPlanAdapter
 import com.example.shopplan.viewmodel.shopplan.ShopPlanModelViewFactory
 import com.example.shopplan.viewmodel.shopplan.ShopPlanViewModel
 
@@ -53,7 +55,19 @@ class ShopPlanActivity : ComponentActivity() {
     }
 
     private fun initRecycleView() {
-        adapter = ShopPlanAdapter()
+        adapter = ShopPlanAdapter(object : ShopPlanActionListener {
+            override fun openShopPlanFormActivity(shopPlan: ShopPlanModel) {
+                Log.i(TAG, "onShopPlanClicked. shopPlan: $shopPlan")
+                val intent = Intent(this@ShopPlanActivity, ShopPlanFormActivity::class.java)
+                intent.putExtra("shopPlan", shopPlan)
+                startActivityForResult(intent, UPDATE_SHOP_PLAN_FORM_REQUEST_CODE)
+            }
+
+            override fun deleteShopPlan(shopPlan: ShopPlanModel) {
+                Log.i(TAG, "onShopPlanDeleteClicked. shopPlan: $shopPlan")
+                shopPlanViewModel.deleteShopPlan(shopPlan)
+            }
+        })
         rvShopPlans = findViewById(R.id.rvShopPlans)
         rvShopPlans.adapter = adapter
         rvShopPlans.layoutManager = LinearLayoutManager(this)

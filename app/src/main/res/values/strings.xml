@@ -4,4 +4,6 @@
     <string name="add_new_item">Add new item</string>
     <string name="empty_main_item_text">Your list is empty</string>
     <string name="click_button_below">Click button below to add new item</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 </resources>
