@@ -1,5 +1,6 @@
 package com.example.shopplan.model.dao
 
+import androidx.lifecycle.MutableLiveData
 import com.example.shopplan.model.menager.CurrencyManager
 import com.example.shopplan.model.table.CurrencyModel
 
@@ -7,14 +8,17 @@ class CurrencyDao(shopPlanDbHelper: ShopPlanDbHelper) {
     private val TAG = "CurrencyDao"
     private var currencyManager: CurrencyManager
     private var currencyModel: CurrencyModel
+    private val currentCurrency = MutableLiveData<String>()
 
     init {
         currencyManager = CurrencyManager(shopPlanDbHelper)
         currencyModel = currencyManager.getCurrentCurrency()!!
+        currentCurrency.value = currencyModel.currency
     }
 
     fun updateCurrency(currencyModel: CurrencyModel) {
         currencyManager.setCurrentCurrency(currencyModel)
+        currentCurrency.value = currencyModel.currency
     }
 
     fun getCurrency(): CurrencyModel {
@@ -22,7 +26,7 @@ class CurrencyDao(shopPlanDbHelper: ShopPlanDbHelper) {
     }
 
     fun getCurrentCurrency(): String {
-        return currencyModel.currency
+        return currentCurrency.value!!
     }
 
     fun getBaseCurrency(): String {
