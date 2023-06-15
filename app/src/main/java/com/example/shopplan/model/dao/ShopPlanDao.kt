@@ -24,6 +24,12 @@ class ShopPlanDao(shopPlanDbHelper: ShopPlanDbHelper) {
         shopPlanManager.addShopPlan(shopPlan)
     }
 
+    fun addShopPlan(shopPlan: ShopPlanModel, originalShopPlan: ShopPlanModel){
+        shopPlanList.add(originalShopPlan)
+        shopPlans.value = shopPlanList
+        shopPlanManager.addShopPlan(shopPlan)
+    }
+
     fun getShopPlans() = shopPlans as LiveData<List<ShopPlanModel>>
 
     fun updateShopPlan(shopPlan: ShopPlanModel) {

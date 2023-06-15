@@ -11,7 +11,7 @@ import com.example.shopplan.model.table.CurrencyModel
 
 class ShopPlanDbHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-    private var baseCurrency = CurrencyConstants.EUR
+    private var baseCurrency = CurrencyConstants.DEFAULT_CURRENCY
     private var symbol = CurrencyConstants.currencySymbols[baseCurrency]
 
     companion object {
