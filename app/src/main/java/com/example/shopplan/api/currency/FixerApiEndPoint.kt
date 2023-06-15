@@ -1,6 +1,7 @@
 package com.example.shopplan.api.currency
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.example.shopplan.utils.BuildConfigValues
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -19,7 +20,7 @@ object FixerApiEndPoint {
 
     private val fixerApi = retrofit.create(FixerApi::class.java)
 
-    suspend fun getExchangeRates(): Map<String, Double>? {
+    suspend fun getExchangeRates(): Map<String, Double> {
         try {
             val response = fixerApi.getLatestRates(ACCESS_KEY)
             Log.i(TAG, "getExchangeRates: $response")
@@ -39,6 +40,6 @@ object FixerApiEndPoint {
             // Handle network or API error
             e.printStackTrace()
         }
-        return null
+        return emptyMap()
     }
 }
