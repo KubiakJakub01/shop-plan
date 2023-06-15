@@ -56,7 +56,7 @@ class ShopPlanActivity : ComponentActivity() {
         shopPlanViewModel = ViewModelProvider(this, shopPlanFactory)[ShopPlanViewModel::class.java]
         shopPlanViewModel.getShopPlans().observe(this) { shopPlans ->
             Log.i(TAG, "shopPlans: $shopPlans")
-            adapter.setShopPlans(shopPlans)
+            adapter.setShopPlans(shopPlans, shopPlanViewModel.getSymbol())
         }
     }
 

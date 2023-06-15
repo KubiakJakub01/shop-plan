@@ -7,6 +7,7 @@ class CurrencyConstants {
         const val GBP = "GBP"
         const val JPY = "JPY"
         const val PLN = "PLN"
+        const val DEFAULT_CURRENCY = EUR
 
         val currencyList = listOf(EUR, USD, GBP, JPY, PLN)
 

@@ -9,12 +9,14 @@ import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopplan.R
+import com.example.shopplan.model.table.CurrencyConstants
 import com.example.shopplan.model.table.ShopPlanModel
 
 class ShopPlanAdapter(private val shopPlanActionListener: ShopPlanActionListener) :
     RecyclerView.Adapter<ShopPlanAdapter.ShopPlanViewHolder>() {
 
     private val shopPlanList = ArrayList<ShopPlanModel>()
+    private var currencySymbol: String = CurrencyConstants.DEFAULT_CURRENCY
 
     inner class ShopPlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
@@ -28,7 +30,8 @@ class ShopPlanAdapter(private val shopPlanActionListener: ShopPlanActionListener
             titleTextView.text = shopPlan.title
             shopNameTextView.text = shopPlan.shopName
             productCountTextView.text = shopPlan.products.size.toString()
-            totalCostTextView.text = shopPlan.totalCost.toString()
+            // Get only 2 digits after the decimal point
+            totalCostTextView.text = String.format("%.2f $currencySymbol", shopPlan.totalCost)
             menuButton.setOnClickListener {
                 popupMenu(it, shopPlan)
             }
@@ -67,9 +70,10 @@ class ShopPlanAdapter(private val shopPlanActionListener: ShopPlanActionListener
         }
     }
 
-    fun setShopPlans(shopPlans: List<ShopPlanModel>) {
+    fun setShopPlans(shopPlans: List<ShopPlanModel>, currencySymbol: String) {
         shopPlanList.clear()
         shopPlanList.addAll(shopPlans)
+        this.currencySymbol = currencySymbol
         notifyDataSetChanged()
     }
 

@@ -9,16 +9,19 @@ class CurrencyDao(shopPlanDbHelper: ShopPlanDbHelper) {
     private var currencyManager: CurrencyManager
     private var currencyModel: CurrencyModel
     private val currentCurrency = MutableLiveData<String>()
+    private val currencySymbol = MutableLiveData<String>()
 
     init {
         currencyManager = CurrencyManager(shopPlanDbHelper)
         currencyModel = currencyManager.getCurrentCurrency()!!
         currentCurrency.value = currencyModel.currency
+        currencySymbol.value = currencyModel.symbol.toString()
     }
 
     fun updateCurrency(currencyModel: CurrencyModel) {
         currencyManager.setCurrentCurrency(currencyModel)
         currentCurrency.value = currencyModel.currency
+        currencySymbol.value = currencyModel.symbol.toString()
     }
 
     fun getCurrency(): CurrencyModel {
@@ -34,6 +37,6 @@ class CurrencyDao(shopPlanDbHelper: ShopPlanDbHelper) {
     }
 
     fun getSymbol(): String {
-        return currencyModel.symbol.toString()
+        return currencySymbol.value!!
     }
 }

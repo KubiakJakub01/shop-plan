@@ -1,6 +1,7 @@
 package com.example.shopplan.viewmodel.shopplan
 
 import android.util.Log
+import androidx.compose.ui.layout.LookaheadLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -10,6 +11,7 @@ import com.example.shopplan.model.repository.CurrencyRepository
 import com.example.shopplan.model.repository.ShopPlanRepository
 import com.example.shopplan.model.table.ShopPlanModel
 import com.example.shopplan.api.currency.FixerApiEndPoint.getExchangeRates
+import com.example.shopplan.model.table.CurrencyConstants
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -19,7 +21,6 @@ class ShopPlanViewModel(
     private val TAG = "ShopPlanViewModel"
     private var exchangeCurrencyRates = MutableLiveData<Map<String, Double>?>()
     private val currentCurrency = MutableLiveData<String>()
-    private val baseCurrency = currencyRepository.getBaseCurrency()
 
     private fun fetchExchangeRates() {
         Log.i(TAG, "Fetching exchange rates")
@@ -37,10 +38,8 @@ class ShopPlanViewModel(
 
     fun onCurrencyChanged(currency: String) {
         Log.i(TAG, "onCurrencyChange: $currency")
-        if (currency != baseCurrency) {
-            updateCurrentCurrency(currency)
-            calculateCurrencyChange(currency)
-        }
+        updateCurrentCurrency(currency)
+        calculateCurrencyChange(currency)
     }
     private fun calculateCurrencyChange(currency: String) {
         if (exchangeCurrencyRates.value == null) {
@@ -58,36 +57,16 @@ class ShopPlanViewModel(
     }
 
     fun addShopPlan(shopPlan: ShopPlanModel) {
-        var currentCurrency = getCurrency()
-        if (currentCurrency != baseCurrency) {
-                    val rate = exchangeCurrencyRates.value!![getCurrency()]
-                    shopPlan.products.forEach {
-                        it.price = convertCurrency(it.price, rate, true)
-                    }
-                    shopPlan.totalCost = convertCurrency(shopPlan.totalCost, rate, true)
-                }
-        shopPlanRepository.addShopPlan(shopPlan)
+        var originalShopPlan = shopPlan.copy()
+        val rate = exchangeCurrencyRates.value!![getCurrency()]
+        shopPlan.products.forEach {
+            it.price = convertCurrency(it.price, rate, true)
+        }
+        shopPlan.totalCost = convertCurrency(shopPlan.totalCost, rate, true)
+        shopPlanRepository.addShopPlan(shopPlan, originalShopPlan)
     }
 
     fun getShopPlans() = shopPlanRepository.getShopPlans()
-
-    private fun getUpdatedShopPlans(): LiveData<List<ShopPlanModel>> {
-        if (exchangeCurrencyRates.value == null) {
-            fetchExchangeRates()
-        }
-        val rate = exchangeCurrencyRates.value!![getCurrency()]
-        return Transformations.map(shopPlanRepository.getShopPlans()) { shopPlans ->
-            val updatedShopPlans = shopPlans.map { shopPlan ->
-                val convertedTotalCost = convertCurrency(shopPlan.totalCost, rate, false)
-                shopPlan.products.forEach {
-                    it.price = convertCurrency(it.price, rate, false)
-                }
-                shopPlan.copy(totalCost = convertedTotalCost)
-            }
-            updatedShopPlans
-        }
-    }
-
 
     fun updateShopPlan(shopPlan: ShopPlanModel) {
         shopPlanRepository.updateShopPlan(shopPlan)
@@ -97,7 +76,7 @@ class ShopPlanViewModel(
         shopPlanRepository.deleteShopPlan(shopPlan)
     }
 
-    fun updateCurrentCurrency(currency: String) {
+    private fun updateCurrentCurrency(currency: String) {
         currencyRepository.setCurrency(currency)
         currentCurrency.value = currency
     }
@@ -107,6 +86,8 @@ class ShopPlanViewModel(
     }
 
     fun getSymbol(): String {
+        Log.i(TAG, "getCurrentCurrency: ${currencyRepository.getCurrentCurrency()}")
+        Log.i(TAG, "getSymbol: ${currencyRepository.getSymbol()}")
         return currencyRepository.getSymbol()
     }
 
