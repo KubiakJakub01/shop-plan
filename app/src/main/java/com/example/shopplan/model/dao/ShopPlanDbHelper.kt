@@ -16,7 +16,7 @@ class ShopPlanDbHelper(context: Context) :
 
     companion object {
         const val DATABASE_NAME = "shop_plan.db"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -30,6 +30,7 @@ class ShopPlanDbHelper(context: Context) :
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL(ShopPlanContract.SQL_DELETE_SHOP_PLAN_TABLE)
         db.execSQL(ShopPlanContract.SQL_DELETE_PRODUCT_TABLE)
+        db.execSQL(ShopPlanContract.SQL_DELETE_CURRENCY_TABLE)
         onCreate(db)
     }
 

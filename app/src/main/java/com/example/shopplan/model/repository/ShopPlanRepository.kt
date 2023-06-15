@@ -21,6 +21,11 @@ class ShopPlanRepository private constructor(private val shopPlanDao: ShopPlanDa
         shopPlanDao.deleteShopPlan(shopPlan)
     }
 
+    fun getSourceShopPlans() = shopPlanDao.getSourceShopPlans()
+    fun setShopPlans(shopPlans: List<ShopPlanModel>) {
+        shopPlanDao.setShopPlans(shopPlans)
+    }
+
     companion object {
         @Volatile
         private var instance: ShopPlanRepository? = null

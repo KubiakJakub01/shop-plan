@@ -39,4 +39,11 @@ class ShopPlanDao(shopPlanDbHelper: ShopPlanDbHelper) {
         shopPlans.value = shopPlanList
         shopPlanManager.deleteShopPlan(shopPlan)
     }
+
+    fun getSourceShopPlans() = shopPlanManager.getShopPlans()
+
+    fun setShopPlans(shopPlans: List<ShopPlanModel>) {
+        shopPlanList = shopPlans.toMutableList()
+        this.shopPlans.value = shopPlanList
+    }
 }
