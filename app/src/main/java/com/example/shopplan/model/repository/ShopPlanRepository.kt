@@ -12,13 +12,17 @@ class ShopPlanRepository private constructor(private val shopPlanDao: ShopPlanDa
         shopPlanDao.addShopPlan(shopPlan)
     }
 
-    fun addShopPlan(shopPlan: ShopPlanModel, originalShopPlan: ShopPlanModel){
-        shopPlanDao.addShopPlan(shopPlan, originalShopPlan)
+    fun addShopPlan(baseCurrencyShopPlan: ShopPlanModel, shopPlan: ShopPlanModel){
+        shopPlanDao.addShopPlan(baseCurrencyShopPlan, shopPlan)
     }
 
     fun getShopPlans() = shopPlanDao.getShopPlans()
     fun updateShopPlan(shopPlan: ShopPlanModel) {
         shopPlanDao.updateShopPlan(shopPlan)
+    }
+
+    fun updateShopPlan(baseCurrencyShopPlan: ShopPlanModel, shopPlan: ShopPlanModel) {
+        shopPlanDao.updateShopPlan(baseCurrencyShopPlan, shopPlan)
     }
 
     fun deleteShopPlan(shopPlan: ShopPlanModel) {

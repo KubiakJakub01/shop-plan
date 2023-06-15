@@ -24,10 +24,10 @@ class ShopPlanDao(shopPlanDbHelper: ShopPlanDbHelper) {
         shopPlanManager.addShopPlan(shopPlan)
     }
 
-    fun addShopPlan(shopPlan: ShopPlanModel, originalShopPlan: ShopPlanModel){
-        shopPlanList.add(originalShopPlan)
+    fun addShopPlan(baseCurrencyShopPlan: ShopPlanModel, shopPlan: ShopPlanModel){
+        shopPlanList.add(shopPlan)
         shopPlans.value = shopPlanList
-        shopPlanManager.addShopPlan(shopPlan)
+        shopPlanManager.addShopPlan(baseCurrencyShopPlan)
     }
 
     fun getShopPlans() = shopPlans as LiveData<List<ShopPlanModel>>
@@ -39,6 +39,15 @@ class ShopPlanDao(shopPlanDbHelper: ShopPlanDbHelper) {
         shopPlans.value = shopPlanList
         shopPlanManager.updateShopPlan(shopPlan)
     }
+
+    fun updateShopPlan(baseCurrencyShopPlan: ShopPlanModel, shopPlan: ShopPlanModel) {
+        val index = shopPlanList.indexOfFirst { it.shopPlanID == shopPlan.shopPlanID }
+        Log.i(TAG, "updateShopPlan: index = $index. shopPlan = $shopPlan")
+        shopPlanList[index] = shopPlan
+        shopPlans.value = shopPlanList
+        shopPlanManager.updateShopPlan(baseCurrencyShopPlan)
+    }
+
 
     fun deleteShopPlan(shopPlan: ShopPlanModel) {
         shopPlanList.remove(shopPlan)
