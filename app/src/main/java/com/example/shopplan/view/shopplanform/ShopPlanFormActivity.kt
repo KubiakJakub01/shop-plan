@@ -94,6 +94,11 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener {
         updateTotalCostText(costChange)
     }
 
+    override fun setTotalCost(totalCost: Double) {
+        this.totalCost = totalCost
+        textViewTotalPrice.text = "Total Price: $currencySymbol${"%.2f".format(totalCost)}"
+    }
+
     private fun fillFormWithShopPlan(shopPlan: ShopPlanModel) {
         editTextTitle.setText(shopPlan.title)
         editTextShopName.setText(shopPlan.shopName)

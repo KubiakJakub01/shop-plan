@@ -96,10 +96,9 @@ class ProductAdapter :
 
     fun deleteCheckedItems() {
         val checkedItems = getCheckedItems()
-        val totalCost = checkedItems.sumOf { it.price * it.quantity }
         productList.removeAll(checkedItems.toSet())
         checkedPositions.clear()
-        quantityChangeListener?.onQuantityChanged((-1) * totalCost)
+        quantityChangeListener?.setTotalCost(getTotalCost())
         notifyDataSetChanged()
     }
 
@@ -113,5 +112,9 @@ class ProductAdapter :
 
     fun setCurrencySymbol(currencySymbol: String) {
         this.currencySymbol = currencySymbol
+    }
+
+    fun getTotalCost(): Double {
+        return productList.sumOf { it.price * it.quantity }
     }
 }
