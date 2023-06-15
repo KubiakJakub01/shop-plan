@@ -6,4 +6,7 @@
     <string name="click_button_below">Click button below to add new item</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
+    <string name="product_num">Product num:</string>
+    <string name="total_cost">Cost: </string>
+    <string name="products">" products"</string>
 </resources>
