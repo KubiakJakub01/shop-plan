@@ -11,10 +11,12 @@ class CurrencyRepository private constructor(private val currencyDao: CurrencyDa
         currencyDao.updateCurrency(currencyModel)
     }
 
-    fun setCurrency(currency: String){
+    fun setCurrency(currency: String) {
         Log.i(TAG, "setCurrency: $currency")
-        val currencyModel = CurrencyModel(currency=currency,
-            symbol = CurrencyConstants.currencySymbols[currency])
+        val currencyModel = CurrencyModel(
+            currency = currency,
+            symbol = CurrencyConstants.currencySymbols[currency]
+        )
         currencyDao.updateCurrency(currencyModel)
     }
 

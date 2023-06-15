@@ -78,23 +78,25 @@ class ShopPlanAdapter(private val shopPlanActionListener: ShopPlanActionListener
     }
 
     private fun popupMenu(view: View, shopPlan: ShopPlanModel) {
-        val popupMenu = PopupMenu(view.context,view)
+        val popupMenu = PopupMenu(view.context, view)
         popupMenu.inflate(R.menu.item_shop_plan_popup)
         popupMenu.setOnMenuItemClickListener {
-            when(it.itemId) {
+            when (it.itemId) {
                 R.id.edit_category -> {
                     shopPlanActionListener.openShopPlanFormActivity(shopPlan)
                     true
                 }
+
                 R.id.delete_category -> {
                     shopPlanActionListener.deleteShopPlan(shopPlan)
                     true
                 }
+
                 else -> false
             }
         }
         popupMenu.setForceShowIcon(true)
-        popupMenu.gravity = Gravity.END;
+        popupMenu.gravity = Gravity.END
         popupMenu.show()
     }
 }

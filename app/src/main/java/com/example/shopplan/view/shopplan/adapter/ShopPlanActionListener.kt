@@ -1,6 +1,5 @@
 package com.example.shopplan.view.shopplan.adapter
 
-import com.example.shopplan.model.table.CurrencyConstants
 import com.example.shopplan.model.table.ShopPlanModel
 
 interface ShopPlanActionListener {

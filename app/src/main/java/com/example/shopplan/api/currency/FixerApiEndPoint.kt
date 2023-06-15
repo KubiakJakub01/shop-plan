@@ -1,7 +1,6 @@
 package com.example.shopplan.api.currency
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.example.shopplan.utils.BuildConfigValues
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

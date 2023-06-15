@@ -24,7 +24,7 @@ class ShopPlanDao(shopPlanDbHelper: ShopPlanDbHelper) {
         shopPlanManager.addShopPlan(shopPlan)
     }
 
-    fun addShopPlan(baseCurrencyShopPlan: ShopPlanModel, shopPlan: ShopPlanModel){
+    fun addShopPlan(baseCurrencyShopPlan: ShopPlanModel, shopPlan: ShopPlanModel) {
         shopPlanList.add(shopPlan)
         shopPlans.value = shopPlanList
         shopPlanManager.addShopPlan(baseCurrencyShopPlan)

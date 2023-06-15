@@ -57,7 +57,8 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener {
 
     private fun initViewModel() {
         productModelViewFactory = InjectorUtils.provideProductViewModelFactory(this)
-        productViewModel = ViewModelProvider(this, productModelViewFactory)[ProductViewModel::class.java]
+        productViewModel =
+            ViewModelProvider(this, productModelViewFactory)[ProductViewModel::class.java]
     }
 
     private fun initializeRecyclerView() {

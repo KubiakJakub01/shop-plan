@@ -26,7 +26,7 @@ object ShopPlanContract {
         const val COLUMN_SYMBOL = "symbol"
     }
 
-    val SQL_DELETE_CURRENCY_TABLE: String?
+    val SQL_DELETE_CURRENCY_TABLE: String
         get() = "DROP TABLE IF EXISTS ${CurrencyEntry.TABLE_NAME}"
     val SQL_DELETE_PRODUCT_TABLE: String
         get() = "DROP TABLE IF EXISTS ${ProductEntry.TABLE_NAME}"

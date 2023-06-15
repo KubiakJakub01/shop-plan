@@ -7,7 +7,8 @@ import com.example.shopplan.model.repository.ShopPlanRepository
 
 class ShopPlanModelViewFactory(
     private val shopPlanRepository: ShopPlanRepository,
-    private val currencyRepository: CurrencyRepository) :
+    private val currencyRepository: CurrencyRepository
+) :
     ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

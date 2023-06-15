@@ -17,10 +17,10 @@ import com.example.shopplan.R
 import com.example.shopplan.model.table.CurrencyConstants
 import com.example.shopplan.model.table.ProductModel
 import com.example.shopplan.model.table.ShopPlanModel
-import com.example.shopplan.view.shopplanform.ShopPlanFormActivity
 import com.example.shopplan.utils.InjectorUtils
 import com.example.shopplan.view.shopplan.adapter.ShopPlanActionListener
 import com.example.shopplan.view.shopplan.adapter.ShopPlanAdapter
+import com.example.shopplan.view.shopplanform.ShopPlanFormActivity
 import com.example.shopplan.viewmodel.shopplan.ShopPlanModelViewFactory
 import com.example.shopplan.viewmodel.shopplan.ShopPlanViewModel
 
@@ -86,7 +86,7 @@ class ShopPlanActivity : ComponentActivity() {
         initSpinner()
     }
 
-    private fun initSpinner(){
+    private fun initSpinner() {
         spinnerCurrency = findViewById(R.id.spinnerCurrency)
 
         // Define a list of currencies
@@ -107,8 +107,13 @@ class ShopPlanActivity : ComponentActivity() {
         spinnerCurrency.setSelection(spinnerAdapter.getPosition(defaultCurrency))
 
         // Set an on item selected listener for spinner object
-        spinnerCurrency.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long){
+        spinnerCurrency.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 var currency = parent?.getItemAtPosition(position).toString()
                 Log.i(TAG, "onItemSelected. currency: $currency")
                 shopPlanViewModel.onCurrencyChanged(currency)
