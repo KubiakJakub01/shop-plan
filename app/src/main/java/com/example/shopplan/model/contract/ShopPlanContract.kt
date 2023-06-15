@@ -19,6 +19,13 @@ object ShopPlanContract {
         const val COLUMN_QUANTITY = "quantity"
     }
 
+    object CurrencyEntry {
+        const val TABLE_NAME = "currencies"
+        const val COLUMN_CURRENCY = "currency"
+        const val COLUMN_BASE_CURRENCY = "base_currency"
+        const val COLUMN_SYMBOL = "symbol"
+    }
+
     val SQL_DELETE_PRODUCT_TABLE: String
         get() = "DROP TABLE IF EXISTS ${ProductEntry.TABLE_NAME}"
     val SQL_DELETE_SHOP_PLAN_TABLE: String
@@ -43,6 +50,14 @@ object ShopPlanContract {
             ${ProductEntry.COLUMN_PRICE} REAL,
             ${ProductEntry.COLUMN_QUANTITY} INTEGER,
             FOREIGN KEY(${ProductEntry.COLUMN_SHOP_PLAN_ID}) REFERENCES ${ShopPlanEntry.TABLE_NAME}(${ShopPlanEntry.COLUMN_SHOP_PLAN_ID}) ON DELETE CASCADE
+        )
+    """
+
+    const val SQL_CREATE_CURRENCY_TABLE = """
+        CREATE TABLE ${CurrencyEntry.TABLE_NAME} (
+            ${CurrencyEntry.COLUMN_CURRENCY} TEXT PRIMARY KEY,
+            ${CurrencyEntry.COLUMN_BASE_CURRENCY} TEXT,
+            ${CurrencyEntry.COLUMN_SYMBOL} TEXT
         )
     """
 }
