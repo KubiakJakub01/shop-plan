@@ -1,7 +1,5 @@
 package com.example.shopplan.view.shopplan.adapter
 
-import android.app.Activity
-import android.content.Intent
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +10,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopplan.R
 import com.example.shopplan.model.table.ShopPlanModel
-import com.example.shopplan.view.shopplanform.ShopPlanFormActivity
 
 class ShopPlanAdapter(private val shopPlanActionListener: ShopPlanActionListener) :
     RecyclerView.Adapter<ShopPlanAdapter.ShopPlanViewHolder>() {

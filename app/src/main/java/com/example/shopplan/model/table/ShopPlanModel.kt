@@ -9,7 +9,7 @@ data class ShopPlanModel(
     val title: String,
     val shopName: String,
     var totalCost: Double,
-    val products: List<ProductModel>
+    var products: List<ProductModel>
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
