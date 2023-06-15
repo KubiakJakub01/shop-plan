@@ -7,7 +7,7 @@ import java.util.Random
 data class ProductModel(
     var productID: Int = getAutoId(),
     val name: String,
-    val price: Double,
+    var price: Double,
     var quantity: Int
 ) : Parcelable {
     constructor(parcel: Parcel) : this(

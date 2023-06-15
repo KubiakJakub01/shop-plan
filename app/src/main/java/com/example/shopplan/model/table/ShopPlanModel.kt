@@ -8,7 +8,7 @@ data class ShopPlanModel(
     val shopPlanID: Int = getAutoId(),
     val title: String,
     val shopName: String,
-    val totalCost: Double,
+    var totalCost: Double,
     val products: List<ProductModel>
 ) : Parcelable {
 
