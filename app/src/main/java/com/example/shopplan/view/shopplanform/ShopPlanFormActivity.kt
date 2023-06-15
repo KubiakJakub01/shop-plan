@@ -33,6 +33,7 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener {
     private lateinit var productViewModel: ProductViewModel
     private var shopPlanID: Int = 0
     private var totalCost: Double = 0.0
+    private var currencySymbol: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +47,7 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener {
         initializeRecyclerView()
         initComponents()
         val shopPlan = intent.getParcelableExtra<ShopPlanModel>("shopPlan")
+        currencySymbol = intent.getStringExtra("currencySymbol").toString()
         if (shopPlan != null) {
             fillFormWithShopPlan(shopPlan)
             shopPlanID = shopPlan.shopPlanID
@@ -98,6 +100,7 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener {
 
         // Clear the existing items in the adapter
         adapter.clearItems()
+        adapter.setCurrencySymbol(currencySymbol)
 
         // Add the items from the shop plan to the adapter
         for (product in shopPlan.products) {
@@ -111,7 +114,7 @@ class ShopPlanFormActivity : AppCompatActivity(), QuantityChangeListener {
 
     fun updateTotalCostText(costChange: Double) {
         totalCost += costChange
-        textViewTotalPrice.text = "Total Price: $${"%.2f".format(totalCost)}"
+        textViewTotalPrice.text = "Total Price: $currencySymbol${"%.2f".format(totalCost)}"
     }
 
     private fun saveShopPlan() {

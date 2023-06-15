@@ -16,6 +16,7 @@ class ProductAdapter :
     private val productList = ArrayList<ProductModel>()
     private val checkedPositions = ArrayList<Int>()
     private var quantityChangeListener: QuantityChangeListener? = null
+    private var currencySymbol: String = ""
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textViewProductName: TextView = itemView.findViewById(R.id.textViewProductName)
@@ -27,7 +28,8 @@ class ProductAdapter :
 
         fun bind(product: ProductModel) {
             textViewProductName.text = product.name
-            textViewPrice.text = "Price: $${product.price}"
+            var priceText = "%.2f".format(product.price)
+            textViewPrice.text = "Price: $priceText$currencySymbol"
             textViewQuantity.text = product.quantity.toString()
 
             checkBox.isChecked = checkedPositions.contains(position)
@@ -107,5 +109,9 @@ class ProductAdapter :
             checkedItems.add(productList[position])
         }
         return checkedItems
+    }
+
+    fun setCurrencySymbol(currencySymbol: String) {
+        this.currencySymbol = currencySymbol
     }
 }

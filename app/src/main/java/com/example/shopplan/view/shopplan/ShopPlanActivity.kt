@@ -66,6 +66,7 @@ class ShopPlanActivity : ComponentActivity() {
                 Log.i(TAG, "onShopPlanClicked. shopPlan: $shopPlan")
                 val intent = Intent(this@ShopPlanActivity, ShopPlanFormActivity::class.java)
                 intent.putExtra("shopPlan", shopPlan)
+                intent.putExtra("currencySymbol", shopPlanViewModel.getSymbol())
                 startActivityForResult(intent, UPDATE_SHOP_PLAN_FORM_REQUEST_CODE)
             }
 
@@ -162,6 +163,7 @@ class ShopPlanActivity : ComponentActivity() {
 
     fun openShopPlanForm(view: View) {
         val intent = Intent(this, ShopPlanFormActivity::class.java)
+        intent.putExtra("currencySymbol", shopPlanViewModel.getSymbol())
         startActivityForResult(intent, NEW_SHOP_PLAN_FORM_REQUEST_CODE)
     }
 }
