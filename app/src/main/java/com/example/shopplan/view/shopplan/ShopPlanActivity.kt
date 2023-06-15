@@ -5,20 +5,27 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Spinner
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopplan.R
+import com.example.shopplan.model.table.CurrencyConstants
 import com.example.shopplan.model.table.ProductModel
 import com.example.shopplan.model.table.ShopPlanModel
 import com.example.shopplan.view.shopplanform.ShopPlanFormActivity
 import com.example.shopplan.utils.InjectorUtils
+import com.example.shopplan.api.currency.FixerApiEndPoint
 import com.example.shopplan.view.shopplan.adapter.ShopPlanActionListener
 import com.example.shopplan.view.shopplan.adapter.ShopPlanAdapter
 import com.example.shopplan.viewmodel.shopplan.ShopPlanModelViewFactory
 import com.example.shopplan.viewmodel.shopplan.ShopPlanViewModel
+import kotlinx.coroutines.launch
 
 class ShopPlanActivity : ComponentActivity() {
 
@@ -28,6 +35,7 @@ class ShopPlanActivity : ComponentActivity() {
     private lateinit var shopPlanFactory: ShopPlanModelViewFactory
     private lateinit var shopPlanViewModel: ShopPlanViewModel
     private lateinit var btnCreateShopPlan: Button
+    private lateinit var spinnerCurrency: Spinner
 
     companion object {
         private const val NEW_SHOP_PLAN_FORM_REQUEST_CODE = 1
@@ -76,6 +84,35 @@ class ShopPlanActivity : ComponentActivity() {
 
     private fun initComponents() {
         btnCreateShopPlan = findViewById(R.id.btnCreateShopPlan)
+        initSpinner()
+    }
+
+    private fun initSpinner(){
+        spinnerCurrency = findViewById(R.id.spinnerCurrency)
+
+        // Define a list of currencies
+        val currencies = CurrencyConstants.currencyList
+
+        // Create an ArrayAdapter using a simple spinner layout and currencies list
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, currencies)
+
+        // Set layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        // Set the adapter to the spinner
+        spinnerCurrency.adapter = adapter
+
+        // Set an on item selected listener for spinner object
+        spinnerCurrency.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long){
+                var currency = parent?.getItemAtPosition(position).toString()
+                shopPlanViewModel.setCurrency(currency)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                Log.i(TAG, "onNothingSelected")
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -19,10 +19,6 @@ class ShopPlanAdapter(private val shopPlanActionListener: ShopPlanActionListener
 
     private val shopPlanList = ArrayList<ShopPlanModel>()
 
-    companion object {
-        private const val UPDATE_SHOP_PLAN_FORM_REQUEST_CODE = 2
-    }
-
     inner class ShopPlanViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
         private val shopNameTextView: TextView = itemView.findViewById(R.id.shopNameTextView)
@@ -42,13 +38,6 @@ class ShopPlanAdapter(private val shopPlanActionListener: ShopPlanActionListener
         }
     }
 
-    private fun deleteShopPlan(shopPlan: ShopPlanModel) {
-        val index = shopPlanList.indexOfFirst { it.title == shopPlan.title }
-        if (index != -1) {
-            shopPlanList.removeAt(index)
-            notifyItemRemoved(index)
-        }
-    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopPlanViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.item_shop_plan, parent, false)
