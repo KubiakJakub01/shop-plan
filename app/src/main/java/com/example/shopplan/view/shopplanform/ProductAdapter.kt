@@ -29,7 +29,7 @@ class ProductAdapter :
         fun bind(product: ProductModel) {
             textViewProductName.text = product.name
             var priceText = "%.2f".format(product.price)
-            textViewPrice.text = "Price: $priceText$currencySymbol"
+            textViewPrice.text = "$priceText$currencySymbol"
             textViewQuantity.text = product.quantity.toString()
 
             checkBox.isChecked = checkedPositions.contains(position)
