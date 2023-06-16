@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopplan.R
-import com.example.shopplan.model.table.CurrencyConstants
+import com.example.shopplan.utils.CurrencyConstants
 import com.example.shopplan.model.table.ShopPlanModel
 
 class ShopPlanAdapter(private val shopPlanActionListener: ShopPlanActionListener) :

@@ -2,7 +2,7 @@ package com.example.shopplan.model.repository
 
 import android.util.Log
 import com.example.shopplan.model.dao.CurrencyDao
-import com.example.shopplan.model.table.CurrencyConstants
+import com.example.shopplan.utils.CurrencyConstants
 import com.example.shopplan.model.table.CurrencyModel
 
 class CurrencyRepository private constructor(private val currencyDao: CurrencyDao) {

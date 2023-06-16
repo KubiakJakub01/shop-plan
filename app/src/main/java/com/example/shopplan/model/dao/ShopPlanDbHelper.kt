@@ -5,7 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.shopplan.model.contract.ShopPlanContract
-import com.example.shopplan.model.table.CurrencyConstants
+import com.example.shopplan.utils.CurrencyConstants
 
 class ShopPlanDbHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {

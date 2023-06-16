@@ -1,4 +1,4 @@
-package com.example.shopplan.model.table
+package com.example.shopplan.utils
 
 class CurrencyConstants {
     companion object {

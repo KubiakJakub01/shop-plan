@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopplan.R
-import com.example.shopplan.model.table.CurrencyConstants
+import com.example.shopplan.utils.CurrencyConstants
 import com.example.shopplan.model.table.ProductModel
 import com.example.shopplan.model.table.ShopPlanModel
 import com.example.shopplan.utils.InjectorUtils
