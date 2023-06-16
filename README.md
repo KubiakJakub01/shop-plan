@@ -22,3 +22,31 @@ Application is written in Kotlin and uses MVVM architecture. It uses SQLite data
 - MVVM
 - SQLite
 - Fixer API
+
+## 4. Screenshots
+
+Screenshots of the application.
+
+Shop plan view:
+
+![Shop plan view](docs/screenshots/ShopPlanView.PNG)
+
+Add shop plan:
+
+![Add shop plan](docs/screenshots/CreateNewShoPlan.PNG)
+
+Add product:
+
+![Add product](docs/screenshots/AddProduct.PNG)
+
+Added products:
+
+![Added products](docs/screenshots/AddedProducts.PNG)
+
+Added shop plans:
+
+![Added shop plans](docs/screenshots/AddedShopPlan.PNG)
+
+Shop plan popup menu:
+
+![Shop plan popup menu](docs/screenshots/ShopPlanPopup.PNG)
