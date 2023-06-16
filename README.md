@@ -2,6 +2,22 @@
 
 A simple android app to plan your shopping.
 
+## Table of contents
+
+- [1. Introduction](#1-introduction)
+- [2. Features](#2-features)
+- [3. Technologies](#3-technologies)
+- [4. Screenshots](#4-screenshots)
+- [5. Architecture overview](#5-architecture-overview)
+  - [5.1. MVVM](#51-mvvm)
+    - [5.1.1. Model](#511-model)
+    - [5.1.2. View](#512-view)
+    - [5.1.3. ViewModel](#513-viewmodel)
+  - [5.2. Patterns](#52-patterns)
+    - [5.2.1. Singleton](#521-singleton)
+    - [5.2.2. Factory](#522-factory)
+    - [5.2.3. Observer](#523-observer)
+
 ## 1. Introduction
 
 This app is a simple shopping list app. It allows you to create a shopping list and add items to it. You can also remove and edit items. The app also allows you to create multiple shopping lists.
